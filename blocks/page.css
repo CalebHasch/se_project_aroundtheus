@@ -1,0 +1,9 @@
+.page {
+  background-color: black;
+  margin: 0;
+}
+
+.page__content {
+  margin-left: 200px;
+  margin-right: 200px;
+}
