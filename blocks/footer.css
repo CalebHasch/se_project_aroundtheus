@@ -1,3 +1,15 @@
 .footer {
   color: white;
 }
+
+.footer__text {
+  margin-top: 7.7%;
+  margin-bottom: 7.1%;
+  font-family:
+    Inter,
+    Times New Roman,
+    serif;
+  font-size: 18px;
+  font-weight: 400;
+  color: #545454;
+}

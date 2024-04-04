@@ -18,19 +18,29 @@
     "title button"
     "subtitle subtitle";
   grid-template-columns: minmax(auto, 373px) auto;
-  line-height: 1.2;
 }
 
 .profile__name {
   margin: 0;
+  font-family:
+    Inter,
+    Times New Roman,
+    serif;
   font-size: 42px;
   font-weight: 500;
 }
 
 .profile__subtitle {
   margin: 0;
+  font-family:
+    Inter,
+    Times New Roman,
+    serif;
   font-size: 18px;
   font-weight: 400;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .profile__add-button {
