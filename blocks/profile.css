@@ -4,10 +4,36 @@
   margin-top: 40px;
   color: white;
   display: flex;
-  justify-content: space-between;
   align-items: center;
 }
 
-.profile__button {
+.profile__pic {
+  border-radius: 50%;
+  margin-right: 30px;
+}
+
+.profile__container {
+  display: grid;
+  grid-template-areas:
+    "title button"
+    "subtitle subtitle";
+  grid-template-columns: minmax(auto, 373px) auto;
+  line-height: 1.2;
+}
+
+.profile__name {
+  margin: 0;
+  font-size: 42px;
+  font-weight: 500;
+}
+
+.profile__subtitle {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 400;
+}
+
+.profile__add-button {
   max-height: 50px;
+  margin-left: auto;
 }
