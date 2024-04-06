@@ -21,3 +21,7 @@ Use javaScript to make content dynamic based off of different input data.
 **Github Pages**
 
 https://calebhasch.github.io/se_project_aroundtheus/
+
+**Video Explanation**
+
+https://drive.google.com/file/d/1_rIxgwC9_u3_0nvOWoDwZ4gwSvbHNz_M/view?usp=sharing
