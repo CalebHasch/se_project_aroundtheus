@@ -20,7 +20,6 @@
     "subtitle subtitle";
   grid-template-columns: minmax(auto, 373px) auto;
   align-items: center;
-  min-width: 282px;
 }
 
 .profile__name {
@@ -42,11 +41,30 @@
 
 .profile__edit-button {
   grid-area: button;
+  background-image: url("../images/edit-icon.svg");
+  background-color: black;
+  height: 24px;
+  width: 24px;
+  border: 1px white;
+}
+
+.profile__edit-button:hover {
+  opacity: 60%;
+  cursor: pointer;
 }
 
 .profile__add-button {
-  max-height: 50px;
+  background-image: url("../images/add-icon.svg");
+  background-color: black;
+  height: 50px;
+  width: 150px;
+  border: 2px white;
   margin-left: auto;
+}
+
+.profile__add-button:hover {
+  opacity: 60%;
+  cursor: pointer;
 }
 
 @media screen and (max-width: 775px) {
@@ -66,12 +84,19 @@
   .profile__edit-button {
     height: 18px;
     width: 18px;
+    background-size: contain;
   }
 }
 
 @media screen and (max-width: 597px) {
+  .profile {
+    justify-content: center;
+  }
+
   .profile__add-button {
     margin: 36px auto 0;
+    width: 282px;
+    background-image: url(../images/wide-add.svg);
   }
 }
 
