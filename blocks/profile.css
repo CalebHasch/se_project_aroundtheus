@@ -88,7 +88,7 @@
   }
 }
 
-@media screen and (max-width: 597px) {
+@media screen and (max-width: 582px) {
   .profile {
     justify-content: center;
   }
@@ -108,5 +108,10 @@
   .profile__container {
     justify-content: center;
     margin: 0 auto;
+    min-width: 282px;
+  }
+
+  .profile__subtitle {
+    margin: auto auto;
   }
 }
