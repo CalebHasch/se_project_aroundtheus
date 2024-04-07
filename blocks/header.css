@@ -2,10 +2,7 @@
   max-width: 880px;
   padding-bottom: 41px;
   margin-top: 45px;
-  border-bottom: 1px solid #545454;
-}
-
-.header__logo {
+  border-bottom: 1px solid rgb(84, 84, 84, 70%);
 }
 
 @media screen and (max-width: 600px) {
