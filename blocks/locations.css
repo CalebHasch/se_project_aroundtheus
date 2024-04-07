@@ -6,3 +6,11 @@
   margin-top: 51px;
   justify-content: center;
 }
+
+@media screen and (max-width: 429px) {
+  .locations {
+    margin-left: 20px;
+    margin-right: 20px;
+    width: calc(100% - 40px);
+  }
+}
