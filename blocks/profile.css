@@ -17,8 +17,9 @@
   grid-template-areas:
     "title button"
     "subtitle subtitle";
-  grid-template-columns: minmax(auto, 373px) auto;
+  grid-template-columns: minmax(auto, 375px) auto;
   align-items: center;
+  column-gap: 18px;
 }
 
 .profile__name {
@@ -29,7 +30,7 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
-  max-width: 373px;
+  max-width: 375px;
   grid-area: title;
 }
 
@@ -77,7 +78,7 @@
 @media screen and (max-width: 775px) {
   .profile__container {
     grid-template-columns: minmax(auto, 196px) auto;
-    row-gap: 14px;
+    gap: 14px 10px;
   }
 
   .profile__name {
