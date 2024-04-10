@@ -17,6 +17,31 @@
         />
       </header>
       <main class="content">
+        <div class="modal modal_opened">
+          <form class="modal__form form">
+            <button
+              class="form__close-button"
+              type="button"
+              aria-label="close"
+            ></button>
+            <h2 class="form__title">Edit profile</h2>
+            <fieldset class="form__field">
+              <input
+                type="text"
+                class="form__input"
+                placeholder="Name"
+                value="Jacques Cousteau"
+              />
+              <input
+                type="text"
+                class="form__input"
+                placeholder="Description"
+                value="Explorer"
+              />
+            </fieldset>
+            <button type="submit" class="form__submit-button">Save</button>
+          </form>
+        </div>
         <section class="profile page__section">
           <img
             src="images/jacques-cousteau.jpg"
