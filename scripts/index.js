@@ -26,13 +26,16 @@ const initialCards = [
 ];
 
 const editButton = document.querySelector(".profile__edit-button");
+const closeButton = document.querySelector(".form__close-button");
 const modal = document.querySelector(".modal");
-console.log(document.querySelector("#profile__edit-button"));
-console.log(document.querySelectorAll(".page__section"));
-console.log(document);
 
-function addModal() {
-  modal.classList.add(".modal_opened");
+function openModal() {
+  modal.classList.add("modal_opened");
 }
 
-// editButton.addEventListener("click", addModal);
+function closeModal() {
+  modal.classList.remove("modal_opened");
+}
+
+editButton.addEventListener("click", openModal);
+closeButton.addEventListener("click", closeModal);
