@@ -1,4 +1,4 @@
-let initialCards = [
+const initialCards = [
   {
     name: "Yosemite Valley",
     link: "https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/around-project/yosemite.jpg",
@@ -24,3 +24,15 @@ let initialCards = [
     link: "https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/around-project/lago.jpg",
   },
 ];
+
+const editButton = document.querySelector(".profile__edit-button");
+const modal = document.querySelector(".modal");
+console.log(document.querySelector("#profile__edit-button"));
+console.log(document.querySelectorAll(".page__section"));
+console.log(document);
+
+function addModal() {
+  modal.classList.add(".modal_opened");
+}
+
+// editButton.addEventListener("click", addModal);
