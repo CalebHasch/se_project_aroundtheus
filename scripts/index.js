@@ -29,6 +29,8 @@ const editButton = document.querySelector(".profile__edit-button");
 const closeButton = document.querySelector(".form__close-button");
 const submitButton = document.querySelector(".form__submit-button");
 const modal = document.querySelector(".modal");
+let cardTemplate = document.querySelector("#locations__card").content;
+let locations = document.querySelector(".locations");
 
 function openModal() {
   modal.classList.add("modal_opened");
@@ -42,6 +44,7 @@ function editProfile(e) {
   e.preventDefault();
   const name = document.querySelector(".profile__name");
   const description = document.querySelector(".profile__subtitle");
+
   let nameVal = document.querySelector("#form__name").value;
   let descriptionVal = document.querySelector("#form__description").value;
 
@@ -49,6 +52,24 @@ function editProfile(e) {
   description.textContent = descriptionVal;
   closeModal();
 }
+
+function getCardElement(data) {
+  for (item of data) {
+    let cardElement = cardTemplate
+      .querySelector(".locations__card")
+      .cloneNode(true);
+    let cardImage = cardElement.querySelector(".card__image");
+    let cardTitle = cardElement.querySelector(".card__title");
+
+    cardImage.src = item.link;
+    cardImage.alt = item.name;
+    cardTitle.textContent = item.name;
+
+    locations.append(cardElement);
+  }
+}
+
+getCardElement(initialCards);
 
 editButton.addEventListener("click", openModal);
 closeButton.addEventListener("click", closeModal);
