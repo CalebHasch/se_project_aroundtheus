@@ -28,12 +28,14 @@
               <input
                 type="text"
                 class="form__input"
+                id="form__name"
                 placeholder="Name"
                 value="Jacques Cousteau"
               />
               <input
                 type="text"
                 class="form__input"
+                id="form__description"
                 placeholder="Description"
                 value="Explorer"
               />
@@ -64,7 +66,7 @@
           ></button>
         </section>
         <section class="locations page__section">
-          <div class="locations__card card">
+          <!-- <div class="locations__card card">
             <img
               class="card__image"
               src="images/yosemite.jpg"
@@ -149,7 +151,20 @@
                 aria-label="like"
               ></button>
             </div>
-          </div>
+          </div> -->
+          <template>
+            <div class="locations__card card">
+              <img class="card__image" alt="location" />
+              <div class="card__container">
+                <h2 class="card__title"></h2>
+                <button
+                  class="card__like-icon"
+                  type="button"
+                  aria-label="like"
+                ></button>
+              </div>
+            </div>
+          </template>
         </section>
       </main>
       <footer class="footer page__section">

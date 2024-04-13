@@ -27,6 +27,7 @@ const initialCards = [
 
 const editButton = document.querySelector(".profile__edit-button");
 const closeButton = document.querySelector(".form__close-button");
+const submitButton = document.querySelector(".form__submit-button");
 const modal = document.querySelector(".modal");
 
 function openModal() {
@@ -37,5 +38,18 @@ function closeModal() {
   modal.classList.remove("modal_opened");
 }
 
+function editProfile(e) {
+  e.preventDefault();
+  const name = document.querySelector(".profile__name");
+  const description = document.querySelector(".profile__subtitle");
+  let nameVal = document.querySelector("#form__name").value;
+  let descriptionVal = document.querySelector("#form__description").value;
+
+  name.textContent = nameVal;
+  description.textContent = descriptionVal;
+  closeModal();
+}
+
 editButton.addEventListener("click", openModal);
 closeButton.addEventListener("click", closeModal);
+submitButton.addEventListener("click", editProfile);
