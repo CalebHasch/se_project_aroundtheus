@@ -28,6 +28,8 @@ const initialCards = [
 const editButton = document.querySelector(".profile__edit-button");
 const addButton = document.querySelector(".profile__add-button");
 const closeButton = document.querySelectorAll(".form__close-button");
+let likeButtons;
+
 const modalForm = document.querySelectorAll(".modal__form");
 const modal = document.querySelectorAll(".modal");
 const cardTemplate = document.querySelector("#locations__card").content;
@@ -88,7 +90,13 @@ function renderCards(data) {
   data.forEach((item) => {
     let cardElement = createCard(item);
     locations.append(cardElement);
+
+    likeButtons = document.querySelectorAll(".card__like-icon");
   });
+}
+
+function likeCard(e) {
+  e.target.classList.toggle("card__like-icon_clicked");
 }
 
 renderCards(initialCards);
@@ -110,3 +118,8 @@ closeButton[1].addEventListener("click", function () {
   closeModal(1);
 });
 modalForm[1].addEventListener("submit", renderNewCard);
+
+//event listeners for cards
+likeButtons.forEach((likeButton) => {
+  likeButton.addEventListener("click", likeCard);
+});
