@@ -35,25 +35,29 @@ let deleteButtons;
 
 //declare elements
 const modalForm = document.querySelectorAll(".modal__form");
-const modal = document.querySelectorAll(".modal");
+const modals = document.querySelectorAll(".modal");
+const modalImage = document.querySelector(".location__image");
+const modalTitle = document.querySelector(".location__title");
+const editModalIndex = 0;
+const addCardModalIndex = 1;
+const locationModalIndex = 2;
 const cardTemplate = document.querySelector("#locations__card").content;
 const locations = document.querySelector(".locations");
 const profileName = document.querySelector(".profile__name");
 const profileDescription = document.querySelector(".profile__subtitle");
-const modalImage = document.querySelector(".location__image");
-const modalTitle = document.querySelector(".location__title");
+
 let cardImages;
 
 function openModal(index) {
-  modal[index].classList.add("modal_opened");
+  modals[index].classList.add("modal_opened");
 }
 
 function closeModal(index) {
-  modal[index].classList.remove("modal_opened");
+  modals[index].classList.remove("modal_opened");
 }
 
 function openLocationModal(e) {
-  modal[2].classList.add("modal_opened");
+  modals[locationModalIndex].classList.add("modal_opened");
   const image = e.target;
 
   modalImage.src = image.src;
@@ -138,25 +142,25 @@ renderCards(initialCards);
 
 //event listeners for profile edit form
 editButton.addEventListener("click", function () {
-  openModal(0);
+  openModal(editModalIndex);
 });
-formCloseButton[0].addEventListener("click", function () {
-  closeModal(0);
+formCloseButton[editModalIndex].addEventListener("click", function () {
+  closeModal(editModalIndex);
 });
-modalForm[0].addEventListener("submit", editProfile);
+modalForm[editModalIndex].addEventListener("submit", editProfile);
 
 //event listeners for location add form
 addButton.addEventListener("click", function () {
-  openModal(1);
+  openModal(addCardModalIndex);
 });
-formCloseButton[1].addEventListener("click", function () {
-  closeModal(1);
+formCloseButton[addCardModalIndex].addEventListener("click", function () {
+  closeModal(addCardModalIndex);
 });
-modalForm[1].addEventListener("submit", renderNewCard);
+modalForm[addCardModalIndex].addEventListener("submit", renderNewCard);
 
 //event listener for card modals
 imageCloseButton.addEventListener("click", function () {
-  closeModal(2);
+  closeModal(locationModalIndex);
 });
 
 //event listeners for cards
