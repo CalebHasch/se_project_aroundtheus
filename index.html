@@ -90,9 +90,29 @@
             aria-label="add"
           ></button>
         </section>
+        <div class="modal">
+          <div class="modal__location location">
+            <button
+              class="location__close-button"
+              type="button"
+              aria-label="close"
+            ></button>
+            <img
+              class="location__image"
+              alt="location"
+              src="./images/bald-mountains.jpg"
+            />
+            <p class="location__title">Grand</p>
+          </div>
+        </div>
         <section class="locations page__section">
           <template id="locations__card">
             <div class="locations__card card">
+              <button
+                class="card__delete-icon"
+                type="button"
+                aria-label="delete"
+              ></button>
               <img class="card__image" alt="location" />
               <div class="card__container">
                 <h2 class="card__title"></h2>
