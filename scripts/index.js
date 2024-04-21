@@ -26,20 +26,21 @@ const initialCards = [
 ];
 
 const editButton = document.querySelector(".profile__edit-button");
-const closeButton = document.querySelector(".form__close-button");
-const modalForm = document.querySelector(".modal__form");
-const modal = document.querySelector(".modal");
+const addButton = document.querySelector(".profile__add-button");
+const closeButton = document.querySelectorAll(".form__close-button");
+const modalForm = document.querySelectorAll(".modal__form");
+const modal = document.querySelectorAll(".modal");
 const cardTemplate = document.querySelector("#locations__card").content;
 const locations = document.querySelector(".locations");
 const profileName = document.querySelector(".profile__name");
 const profileDescription = document.querySelector(".profile__subtitle");
 
-function openModal() {
-  modal.classList.add("modal_opened");
+function openModal(index) {
+  modal[index].classList.add("modal_opened");
 }
 
-function closeModal() {
-  modal.classList.remove("modal_opened");
+function closeModal(index) {
+  modal[index].classList.remove("modal_opened");
 }
 
 function editProfile(e) {
@@ -51,7 +52,7 @@ function editProfile(e) {
 
   profileName.textContent = nameVal;
   profileDescription.textContent = descriptionVal;
-  closeModal();
+  closeModal(0);
 }
 
 function createCard(item) {
@@ -68,15 +69,44 @@ function createCard(item) {
   return cardElement;
 }
 
+// renders card created by user
+function renderNewCard(e) {
+  e.preventDefault();
+
+  const title = document.querySelector("#form__title").value;
+  const imageUrl = document.querySelector("#form__image-link").value;
+  const cardData = { name: title, link: imageUrl };
+  const cardElement = createCard(cardData);
+
+  locations.append(cardElement);
+
+  closeModal(1);
+}
+
+// renders default cards
 function renderCards(data) {
-  for (item of data) {
+  data.forEach((item) => {
     let cardElement = createCard(item);
     locations.append(cardElement);
-  }
+  });
 }
 
 renderCards(initialCards);
 
-editButton.addEventListener("click", openModal);
-closeButton.addEventListener("click", closeModal);
-modalForm.addEventListener("submit", editProfile);
+//event listeners for profile edit form
+editButton.addEventListener("click", function () {
+  openModal(0);
+});
+closeButton[0].addEventListener("click", function () {
+  closeModal(0);
+});
+modalForm[0].addEventListener("submit", editProfile);
+
+//event listeners for location add form
+addButton.addEventListener("click", function () {
+  openModal(1);
+});
+closeButton[1].addEventListener("click", function () {
+  closeModal(1);
+});
+modalForm[1].addEventListener("submit", renderNewCard);
