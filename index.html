@@ -16,10 +16,10 @@
         />
       </header>
       <main class="content">
-        <div class="modal">
-          <form class="modal__form form">
+        <div class="modal" id="edit-profile-modal">
+          <form class="modal__form form" id="form-edit-profile">
             <button
-              class="form__close-button"
+              class="form__close-button modal__close"
               type="button"
               aria-label="close"
             ></button>
@@ -43,10 +43,10 @@
             <button type="submit" class="form__submit-button">Save</button>
           </form>
         </div>
-        <div class="modal">
-          <form class="modal__form form">
+        <div class="modal" id="add-card-modal">
+          <form class="modal__form form" id="form-add-card">
             <button
-              class="form__close-button"
+              class="form__close-button modal__close"
               type="button"
               aria-label="close"
             ></button>
@@ -90,19 +90,15 @@
             aria-label="add"
           ></button>
         </section>
-        <div class="modal">
+        <div class="modal" id="location-modal">
           <div class="modal__location location">
             <button
-              class="location__close-button"
+              class="location__close-button modal__close"
               type="button"
               aria-label="close"
             ></button>
-            <img
-              class="location__image"
-              alt="location"
-              src="./images/bald-mountains.jpg"
-            />
-            <p class="location__title">Grand</p>
+            <img class="location__image" alt="location" />
+            <p class="location__title"></p>
           </div>
         </div>
         <section class="locations page__section">

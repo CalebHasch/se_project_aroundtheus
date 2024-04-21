@@ -11,19 +11,6 @@
   margin-right: auto;
 }
 
-.location__close-button {
-  width: 40px;
-  height: 40px;
-  background-image: url(../images/close-icon.svg);
-  background-color: transparent;
-  background-repeat: no-repeat;
-  background-size: cover;
-  border: none;
-  position: absolute;
-  top: -48px;
-  right: -48px;
-}
-
 .location__image {
   max-width: 75vw;
   max-height: 75vh;

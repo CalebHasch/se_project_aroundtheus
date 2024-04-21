@@ -28,52 +28,59 @@ const initialCards = [
 // declare buttons
 const editButton = document.querySelector(".profile__edit-button");
 const addButton = document.querySelector(".profile__add-button");
-const formCloseButton = document.querySelectorAll(".form__close-button");
-const imageCloseButton = document.querySelector(".location__close-button");
+const closeButtons = document.querySelectorAll(".modal__close");
 let likeButtons;
 let deleteButtons;
 
-//declare elements
-const modalForm = document.querySelectorAll(".modal__form");
+//declare modal elements
+const editForm = document.querySelector("#form-edit-profile");
+const addCardForm = document.querySelector("#form-add-card");
 const modals = document.querySelectorAll(".modal");
 const modalImage = document.querySelector(".location__image");
 const modalTitle = document.querySelector(".location__title");
-const editModalIndex = 0;
-const addCardModalIndex = 1;
-const locationModalIndex = 2;
+const editModal = document.querySelector("#edit-profile-modal");
+const addCardModal = document.querySelector("#add-card-modal");
+const locationModal = document.querySelector("#location-modal");
+
+//declare card and profile elements
 const cardTemplate = document.querySelector("#locations__card").content;
 const locations = document.querySelector(".locations");
 const profileName = document.querySelector(".profile__name");
 const profileDescription = document.querySelector(".profile__subtitle");
+const formTitle = document.querySelector("#form__title");
+const formImage = document.querySelector("#form__image-link");
 
 let cardImages;
 
-function openModal(index) {
-  modals[index].classList.add("modal_opened");
+function openModal(modal) {
+  modal.classList.add("modal_opened");
 }
 
-function closeModal(index) {
-  modals[index].classList.remove("modal_opened");
+function closeModal(modal) {
+  modal.classList.remove("modal_opened");
 }
 
 function openLocationModal(e) {
-  modals[locationModalIndex].classList.add("modal_opened");
+  openModal(locationModal);
+
   const image = e.target;
+  const imageName = image.nextElementSibling.textContent;
 
   modalImage.src = image.src;
-  modalTitle.textContent = image.nextElementSibling.textContent;
+  modalImage.alt = imageName;
+  modalTitle.textContent = imageName;
 }
 
 function editProfile(e) {
   e.preventDefault();
   console.log("sub");
 
-  let nameVal = document.querySelector("#form__name").value;
-  let descriptionVal = document.querySelector("#form__description").value;
+  const nameVal = document.querySelector("#form__name").value;
+  const descriptionVal = document.querySelector("#form__description").value;
 
   profileName.textContent = nameVal;
   profileDescription.textContent = descriptionVal;
-  closeModal(0);
+  closeModal(editModal);
 }
 
 function createCard(item) {
@@ -91,7 +98,7 @@ function createCard(item) {
 }
 
 function removeCard(e) {
-  const cardElement = e.target.parentElement;
+  const cardElement = e.target.closest(".card");
 
   cardElement.remove();
 }
@@ -100,22 +107,24 @@ function removeCard(e) {
 function renderNewCard(e) {
   e.preventDefault();
 
-  const title = document.querySelector("#form__title").value;
-  const imageUrl = document.querySelector("#form__image-link").value;
+  const title = formTitle.value;
+  const imageUrl = formImage.value;
   const cardData = { name: title, link: imageUrl };
   const cardElement = createCard(cardData);
 
-  locations.append(cardElement);
+  locations.prepend(cardElement);
 
-  closeModal(1);
+  e.target.reset();
+  closeModal(addCardModal);
 
-  likeButtons = document.querySelectorAll(".card__like-icon");
-  deleteButtons = document.querySelectorAll(".card__delete-icon");
-  cardImages = document.querySelectorAll(".card__image");
+  const likeButton = cardElement.querySelectorAll(".card__like-icon");
+  const deleteButton = cardElement.querySelectorAll(".card__delete-icon");
+  const cardImage = cardElement.querySelectorAll(".card__image");
+  console.log(likeButton, cardImage, deleteButton);
 
-  addImageEvent();
-  addDeleteEvent();
-  addLikeEvent();
+  addEvent(likeButton, likeCard);
+  addEvent(deleteButton, removeCard);
+  addEvent(cardImage, openLocationModal);
 }
 
 // renders default cards
@@ -128,9 +137,9 @@ function renderCards(data) {
     deleteButtons = document.querySelectorAll(".card__delete-icon");
     cardImages = document.querySelectorAll(".card__image");
 
-    addImageEvent();
-    addDeleteEvent();
-    addLikeEvent();
+    addEvent(likeButtons, likeCard);
+    addEvent(deleteButtons, removeCard);
+    addEvent(cardImages, openLocationModal);
   });
 }
 
@@ -140,44 +149,28 @@ function likeCard(e) {
 
 renderCards(initialCards);
 
+//event listener for all close buttons
+closeButtons.forEach((button) => {
+  const modal = button.closest(".modal");
+
+  button.addEventListener("click", () => closeModal(modal));
+});
+
 //event listeners for profile edit form
 editButton.addEventListener("click", function () {
-  openModal(editModalIndex);
+  openModal(editModal);
 });
-formCloseButton[editModalIndex].addEventListener("click", function () {
-  closeModal(editModalIndex);
-});
-modalForm[editModalIndex].addEventListener("submit", editProfile);
+editForm.addEventListener("submit", editProfile);
 
 //event listeners for location add form
 addButton.addEventListener("click", function () {
-  openModal(addCardModalIndex);
+  openModal(addCardModal);
 });
-formCloseButton[addCardModalIndex].addEventListener("click", function () {
-  closeModal(addCardModalIndex);
-});
-modalForm[addCardModalIndex].addEventListener("submit", renderNewCard);
-
-//event listener for card modals
-imageCloseButton.addEventListener("click", function () {
-  closeModal(locationModalIndex);
-});
+addCardForm.addEventListener("submit", renderNewCard);
 
 //event listeners for cards
-function addImageEvent() {
-  cardImages.forEach((image) => {
-    image.addEventListener("click", openLocationModal);
-  });
-}
-
-function addLikeEvent() {
-  likeButtons.forEach((likeButton) => {
-    likeButton.addEventListener("click", likeCard);
-  });
-}
-
-function addDeleteEvent() {
-  deleteButtons.forEach((deleteButton) => {
-    deleteButton.addEventListener("click", removeCard);
+function addEvent(element, action) {
+  element.forEach((image) => {
+    image.addEventListener("click", action);
   });
 }
