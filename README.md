@@ -8,7 +8,7 @@
 
 **Intro**
 
-This project is made so all the elements are displayed correctly on popular screen sizes. It uses flexboxes and grids to display content in an organized fashion.
+This project is made so all the elements are displayed correctly on popular screen sizes. It uses flexboxes and grids to display content in an organized fashion. It also uses javaScript to dynamically add and remove content.
 
 **Figma**
 
@@ -16,7 +16,7 @@ This project is made so all the elements are displayed correctly on popular scre
 
 **Plans**
 
-Use javaScript to make content dynamic based off of different input data.
+connect a backend database to make changes permanent
 
 **Github Pages**
 
