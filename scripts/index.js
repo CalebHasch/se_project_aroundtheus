@@ -29,8 +29,6 @@ const initialCards = [
 const editButton = document.querySelector(".profile__edit-button");
 const addButton = document.querySelector(".profile__add-button");
 const closeButtons = document.querySelectorAll(".modal__close");
-let likeButtons;
-let deleteButtons;
 
 //declare modal elements
 const editForm = document.querySelector("#form-edit-profile");
@@ -49,7 +47,6 @@ const profileName = document.querySelector(".profile__name");
 const profileDescription = document.querySelector(".profile__subtitle");
 const formTitle = document.querySelector("#form__title");
 const formImage = document.querySelector("#form__image-link");
-
 let cardImages;
 
 function openModal(modal) {
@@ -84,11 +81,17 @@ function editProfile(e) {
 }
 
 function createCard(item) {
-  let cardElement = cardTemplate
+  const cardElement = cardTemplate
     .querySelector(".locations__card")
     .cloneNode(true);
-  let cardImage = cardElement.querySelector(".card__image");
-  let cardTitle = cardElement.querySelector(".card__title");
+  const cardImage = cardElement.querySelector(".card__image");
+  const cardTitle = cardElement.querySelector(".card__title");
+  const deleteButton = cardElement.querySelector(".card__delete-icon");
+  const likeButton = cardElement.querySelector(".card__like-icon");
+
+  addEvent(likeButton, likeCard);
+  addEvent(deleteButton, removeCard);
+  addEvent(cardImage, openLocationModal);
 
   cardImage.src = item.link;
   cardImage.alt = item.name;
@@ -116,30 +119,13 @@ function renderNewCard(e) {
 
   e.target.reset();
   closeModal(addCardModal);
-
-  const likeButton = cardElement.querySelectorAll(".card__like-icon");
-  const deleteButton = cardElement.querySelectorAll(".card__delete-icon");
-  const cardImage = cardElement.querySelectorAll(".card__image");
-  console.log(likeButton, cardImage, deleteButton);
-
-  addEvent(likeButton, likeCard);
-  addEvent(deleteButton, removeCard);
-  addEvent(cardImage, openLocationModal);
 }
 
 // renders default cards
 function renderCards(data) {
   data.forEach((item) => {
-    let cardElement = createCard(item);
+    const cardElement = createCard(item);
     locations.append(cardElement);
-
-    likeButtons = document.querySelectorAll(".card__like-icon");
-    deleteButtons = document.querySelectorAll(".card__delete-icon");
-    cardImages = document.querySelectorAll(".card__image");
-
-    addEvent(likeButtons, likeCard);
-    addEvent(deleteButtons, removeCard);
-    addEvent(cardImages, openLocationModal);
   });
 }
 
@@ -170,7 +156,5 @@ addCardForm.addEventListener("submit", renderNewCard);
 
 //event listeners for cards
 function addEvent(element, action) {
-  element.forEach((image) => {
-    image.addEventListener("click", action);
-  });
+  element.addEventListener("click", action);
 }
