@@ -49,12 +49,20 @@ const formTitle = document.querySelector("#form__title");
 const formImage = document.querySelector("#form__image-link");
 let cardImages;
 
+function closeModalEvent(e) {
+  if (e.target.classList.contains("modal")) {
+    closeModal(e.target);
+  }
+}
+
 function openModal(modal) {
   modal.classList.add("modal_opened");
+  modal.addEventListener("click", closeModalEvent);
 }
 
 function closeModal(modal) {
   modal.classList.remove("modal_opened");
+  modal.removeEventListener("click", closeModalEvent);
 }
 
 function openLocationModal(e) {
@@ -89,9 +97,9 @@ function createCard(item) {
   const deleteButton = cardElement.querySelector(".card__delete-icon");
   const likeButton = cardElement.querySelector(".card__like-icon");
 
-  addEvent(likeButton, likeCard);
-  addEvent(deleteButton, removeCard);
-  addEvent(cardImage, openLocationModal);
+  addClickEvent(likeButton, likeCard);
+  addClickEvent(deleteButton, removeCard);
+  addClickEvent(cardImage, openLocationModal);
 
   cardImage.src = item.link;
   cardImage.alt = item.name;
@@ -155,6 +163,70 @@ addButton.addEventListener("click", function () {
 addCardForm.addEventListener("submit", renderNewCard);
 
 //event listeners for cards
-function addEvent(element, action) {
+function addClickEvent(element, action) {
   element.addEventListener("click", action);
 }
+
+// input validity functions
+function addInputEvents(field, button) {
+  const inputList = Array.from(field.querySelectorAll(".form__input"));
+
+  toggleSubmitButton(inputList, button);
+  inputList.forEach((input) => {
+    input.addEventListener("input", () => {
+      checkValidity(field, input);
+      toggleSubmitButton(inputList, button);
+    });
+  });
+}
+
+function showError(errorElement, input) {
+  const errorMessage = input.validationMessage;
+
+  input.classList.add("form__input_invalid");
+  errorElement.textContent = errorMessage;
+}
+
+function hideError(errorElement, input) {
+  input.classList.remove("form__input_invalid");
+  errorElement.textContent = "";
+}
+
+function checkValidity(field, input) {
+  const errorElement = field.querySelector(".form__error");
+
+  if (!input.validity.valid) {
+    showError(errorElement, input);
+  } else {
+    hideError(errorElement, input);
+  }
+}
+
+function enableValidation() {
+  const formList = Array.from(document.querySelectorAll(".form"));
+
+  formList.forEach((form) => {
+    const fieldList = Array.from(document.querySelectorAll(".form__field"));
+    const button = form.querySelector(".form__submit-button");
+
+    fieldList.forEach((field) => {
+      addInputEvents(field, button);
+    });
+  });
+}
+
+function toggleSubmitButton(inputList, button) {
+  if (hasInvalidInput(inputList)) {
+    button.classList.add("form__submit-button_inactive");
+  } else {
+    button.classList.remove("form__submit-button_inactive");
+  }
+}
+
+function hasInvalidInput(inputList) {
+  return inputList.some((inputElement) => {
+    return !inputElement.validity.valid;
+  });
+}
+
+enableValidation();
