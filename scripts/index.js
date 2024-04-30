@@ -39,6 +39,7 @@ const modalTitle = document.querySelector(".location__title");
 const editModal = document.querySelector("#edit-profile-modal");
 const addCardModal = document.querySelector("#add-card-modal");
 const locationModal = document.querySelector("#location-modal");
+let currentModal;
 
 //declare card and profile elements
 const cardTemplate = document.querySelector("#locations__card").content;
@@ -50,14 +51,18 @@ const formImage = document.querySelector("#form__image-link");
 let cardImages;
 
 function closeModalEvent(e) {
-  if (e.target.classList.contains("modal")) {
-    closeModal(e.target);
+  if (e.target.classList.contains("modal") || e.key == "Escape") {
+    closeModal(currentModal);
   }
 }
 
 function openModal(modal) {
+  currentModal = modal;
   modal.classList.add("modal_opened");
   modal.addEventListener("click", closeModalEvent);
+  document.addEventListener("keydown", closeModalEvent);
+
+  checkValidityOnOpen(modal);
 }
 
 function closeModal(modal) {
@@ -78,7 +83,6 @@ function openLocationModal(e) {
 
 function editProfile(e) {
   e.preventDefault();
-  console.log("sub");
 
   const nameVal = document.querySelector("#form__name").value;
   const descriptionVal = document.querySelector("#form__description").value;
@@ -168,16 +172,48 @@ function addClickEvent(element, action) {
 }
 
 // input validity functions
-function addInputEvents(field, button) {
-  const inputList = Array.from(field.querySelectorAll(".form__input"));
+function enableValidation() {
+  const formList = Array.from(document.querySelectorAll(".form"));
 
-  toggleSubmitButton(inputList, button);
-  inputList.forEach((input) => {
-    input.addEventListener("input", () => {
-      checkValidity(field, input);
-      toggleSubmitButton(inputList, button);
+  formList.forEach((form) => {
+    const fieldList = Array.from(document.querySelectorAll(".form__field"));
+    const inputList = Array.from(form.querySelectorAll(".form__input"));
+    const button = form.querySelector(".form__submit-button");
+
+    fieldList.forEach((field) => {
+      addInputEvents(field, inputList, button);
     });
   });
+}
+
+function addInputEvents(field, inputList, button) {
+  const input = field.querySelector(".form__input");
+
+  input.addEventListener("input", () => {
+    checkValidity(field, input);
+    toggleSubmitButton(inputList, button);
+  });
+}
+
+function checkValidity(field, input) {
+  const errorElement = field.querySelector(".form__error");
+
+  if (!input.validity.valid) {
+    showError(errorElement, input);
+  } else {
+    hideError(errorElement, input);
+  }
+}
+
+function checkValidityOnOpen(modal) {
+  const form = modal.querySelector(".form");
+
+  if (form) {
+    const button = form.querySelector(".form__submit-button");
+    const inputList = Array.from(form.querySelectorAll(".form__input"));
+
+    toggleSubmitButton(inputList, button);
+  }
 }
 
 function showError(errorElement, input) {
@@ -192,34 +228,13 @@ function hideError(errorElement, input) {
   errorElement.textContent = "";
 }
 
-function checkValidity(field, input) {
-  const errorElement = field.querySelector(".form__error");
-
-  if (!input.validity.valid) {
-    showError(errorElement, input);
-  } else {
-    hideError(errorElement, input);
-  }
-}
-
-function enableValidation() {
-  const formList = Array.from(document.querySelectorAll(".form"));
-
-  formList.forEach((form) => {
-    const fieldList = Array.from(document.querySelectorAll(".form__field"));
-    const button = form.querySelector(".form__submit-button");
-
-    fieldList.forEach((field) => {
-      addInputEvents(field, button);
-    });
-  });
-}
-
 function toggleSubmitButton(inputList, button) {
   if (hasInvalidInput(inputList)) {
     button.classList.add("form__submit-button_inactive");
+    button.disabled = true;
   } else {
     button.classList.remove("form__submit-button_inactive");
+    button.disabled = false;
   }
 }
 
