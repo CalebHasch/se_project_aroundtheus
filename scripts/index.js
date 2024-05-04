@@ -39,6 +39,8 @@ const modalTitle = document.querySelector(".location__title");
 const editModal = document.querySelector("#edit-profile-modal");
 const addCardModal = document.querySelector("#add-card-modal");
 const locationModal = document.querySelector("#location-modal");
+const editNameInput = document.querySelector("#form__name");
+const editDescriptionInput = document.querySelector("#form__description");
 let currentModal;
 
 //declare card and profile elements
@@ -48,7 +50,6 @@ const profileName = document.querySelector(".profile__name");
 const profileDescription = document.querySelector(".profile__subtitle");
 const formTitle = document.querySelector("#form__title");
 const formImage = document.querySelector("#form__image-link");
-let cardImages;
 
 function closeModalEvent(e) {
   if (e.target.classList.contains("modal") || e.key == "Escape") {
@@ -61,13 +62,12 @@ function openModal(modal) {
   modal.classList.add("modal_opened");
   modal.addEventListener("click", closeModalEvent);
   document.addEventListener("keydown", closeModalEvent);
-
-  checkValidityOnOpen(modal);
 }
 
 function closeModal(modal) {
   modal.classList.remove("modal_opened");
   modal.removeEventListener("click", closeModalEvent);
+  document.removeEventListener("keydown", closeModalEvent);
 }
 
 function openLocationModal(e) {
@@ -84,8 +84,8 @@ function openLocationModal(e) {
 function editProfile(e) {
   e.preventDefault();
 
-  const nameVal = document.querySelector("#form__name").value;
-  const descriptionVal = document.querySelector("#form__description").value;
+  const nameVal = editNameInput.value;
+  const descriptionVal = editDescriptionInput.value;
 
   profileName.textContent = nameVal;
   profileDescription.textContent = descriptionVal;
@@ -157,12 +157,14 @@ closeButtons.forEach((button) => {
 //event listeners for profile edit form
 editButton.addEventListener("click", function () {
   openModal(editModal);
+  checkValidityOnOpen(validationObj, editModal);
 });
 editForm.addEventListener("submit", editProfile);
 
 //event listeners for location add form
 addButton.addEventListener("click", function () {
   openModal(addCardModal);
+  checkValidityOnOpen(validationObj, addCardModal);
 });
 addCardForm.addEventListener("submit", renderNewCard);
 
