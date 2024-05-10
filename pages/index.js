@@ -1,3 +1,6 @@
+import { FormValidator } from "../components/FormValidator.js";
+import { Card } from "../components/card.js";
+
 const initialCards = [
   {
     name: "Yosemite Valley",
@@ -25,6 +28,16 @@ const initialCards = [
   },
 ];
 
+const validationObj = {
+  formSelector: ".form",
+  fieldSelector: ".form__field",
+  inputSelector: ".form__input",
+  errorSelector: ".form__error",
+  submitButtonSelector: ".form__submit-button",
+  inactiveButtonClass: "form__submit-button_inactive",
+  inputErrorClass: "form__input_invalid",
+};
+
 // declare buttons
 const editButton = document.querySelector(".profile__edit-button");
 const addButton = document.querySelector(".profile__add-button");
@@ -33,7 +46,6 @@ const closeButtons = document.querySelectorAll(".modal__close");
 //declare modal elements
 const editForm = document.querySelector("#form-edit-profile");
 const addCardForm = document.querySelector("#form-add-card");
-const modals = document.querySelectorAll(".modal");
 const modalImage = document.querySelector(".location__image");
 const modalTitle = document.querySelector(".location__title");
 const editModal = document.querySelector("#edit-profile-modal");
@@ -44,12 +56,15 @@ const editDescriptionInput = document.querySelector("#form__description");
 let currentModal;
 
 //declare card and profile elements
-const cardTemplate = document.querySelector("#locations__card").content;
 const locations = document.querySelector(".locations");
 const profileName = document.querySelector(".profile__name");
 const profileDescription = document.querySelector(".profile__subtitle");
 const formTitle = document.querySelector("#form__title");
 const formImage = document.querySelector("#form__image-link");
+
+// validation class
+const editFormValidation = new FormValidator(validationObj, editForm);
+const cardFormvalidation = new FormValidator(validationObj, addCardForm);
 
 function closeModalEvent(e) {
   if (e.target.classList.contains("modal") || e.key == "Escape") {
@@ -92,32 +107,6 @@ function editProfile(e) {
   closeModal(editModal);
 }
 
-function createCard(item) {
-  const cardElement = cardTemplate
-    .querySelector(".locations__card")
-    .cloneNode(true);
-  const cardImage = cardElement.querySelector(".card__image");
-  const cardTitle = cardElement.querySelector(".card__title");
-  const deleteButton = cardElement.querySelector(".card__delete-icon");
-  const likeButton = cardElement.querySelector(".card__like-icon");
-
-  addClickEvent(likeButton, likeCard);
-  addClickEvent(deleteButton, removeCard);
-  addClickEvent(cardImage, openLocationModal);
-
-  cardImage.src = item.link;
-  cardImage.alt = item.name;
-  cardTitle.textContent = item.name;
-
-  return cardElement;
-}
-
-function removeCard(e) {
-  const cardElement = e.target.closest(".card");
-
-  cardElement.remove();
-}
-
 // renders card created by user
 function renderNewCard(e) {
   e.preventDefault();
@@ -125,7 +114,11 @@ function renderNewCard(e) {
   const title = formTitle.value;
   const imageUrl = formImage.value;
   const cardData = { name: title, link: imageUrl };
-  const cardElement = createCard(cardData);
+  const cardElement = new Card(
+    cardData,
+    ".locations__card",
+    openLocationModal
+  ).createCard();
 
   locations.prepend(cardElement);
 
@@ -136,13 +129,13 @@ function renderNewCard(e) {
 // renders default cards
 function renderCards(data) {
   data.forEach((item) => {
-    const cardElement = createCard(item);
+    const cardElement = new Card(
+      item,
+      ".locations__card",
+      openLocationModal
+    ).createCard();
     locations.append(cardElement);
   });
-}
-
-function likeCard(e) {
-  e.target.classList.toggle("card__like-icon_clicked");
 }
 
 renderCards(initialCards);
@@ -157,18 +150,24 @@ closeButtons.forEach((button) => {
 //event listeners for profile edit form
 editButton.addEventListener("click", function () {
   openModal(editModal);
-  checkValidityOnOpen(validationObj, editModal);
+  editFormValidation.checkValidityOnSubmit(validationObj, editModal);
 });
-editForm.addEventListener("submit", editProfile);
+editForm.addEventListener("submit", (e) => {
+  editProfile(e);
+  editFormValidation.checkValidityOnSubmit(validationObj, editModal);
+});
 
 //event listeners for location add form
 addButton.addEventListener("click", function () {
   openModal(addCardModal);
-  checkValidityOnOpen(validationObj, addCardModal);
+  cardFormValidation.checkValidityOnSubmit(validationObj, addCardModal);
 });
-addCardForm.addEventListener("submit", renderNewCard);
+addCardForm.addEventListener("submit", (e) => {
+  renderNewCard(e);
+  console.log(
+    cardFormValidation.checkValidityOnSubmit(validationObj, addCardModal)
+  );
+});
 
-//event listeners for cards
-function addClickEvent(element, action) {
-  element.addEventListener("click", action);
-}
+editFormValidation.enableValidation();
+cardFormvalidation.enableValidation();
