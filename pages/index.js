@@ -64,7 +64,7 @@ const formImage = document.querySelector("#form__image-link");
 
 // validation class
 const editFormValidation = new FormValidator(validationObj, editForm);
-const cardFormvalidation = new FormValidator(validationObj, addCardForm);
+const cardFormValidation = new FormValidator(validationObj, addCardForm);
 
 function closeModalEvent(e) {
   if (e.target.classList.contains("modal") || e.key == "Escape") {
@@ -170,4 +170,4 @@ addCardForm.addEventListener("submit", (e) => {
 });
 
 editFormValidation.enableValidation();
-cardFormvalidation.enableValidation();
+cardFormValidation.enableValidation();
