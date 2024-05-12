@@ -1,16 +1,23 @@
-const cardTemplate = document.querySelector("#locations__card").content;
-
 export class Card {
   constructor(data, cardSelector, handleImageClick) {
     this.image = data.link;
     this.text = data.name;
-    this.cardSelector = cardSelector;
+    this.cardTemplate = document.querySelector(cardSelector).content;
     this.handleImageClick = handleImageClick;
+    this._cardElement = this.cardTemplate
+      .querySelector(".locations__card")
+      .cloneNode(true);
+    this._cardImage = this._cardElement.querySelector(".card__image");
+    this._cardTitle = this._cardElement.querySelector(".card__title");
+    this._deleteButton = this._cardElement.querySelector(".card__delete-icon");
+    this._likeButton = this._cardElement.querySelector(".card__like-icon");
   }
 
   //event listeners for cards
-  _addClickEvent(element, action) {
-    element.addEventListener("click", action);
+  _setEventListeners() {
+    this._likeButton.addEventListener("click", this._likeCard);
+    this._deleteButton.addEventListener("click", this._removeCard);
+    this._cardImage.addEventListener("click", this._handleImageClick);
   }
 
   _likeCard(e) {
@@ -23,22 +30,12 @@ export class Card {
   }
 
   createCard() {
-    const cardElement = cardTemplate
-      .querySelector(".locations__card")
-      .cloneNode(true);
-    const cardImage = cardElement.querySelector(".card__image");
-    const cardTitle = cardElement.querySelector(".card__title");
-    const deleteButton = cardElement.querySelector(".card__delete-icon");
-    const likeButton = cardElement.querySelector(".card__like-icon");
+    this._setEventListeners();
 
-    this._addClickEvent(likeButton, this._likeCard);
-    this._addClickEvent(deleteButton, this._removeCard);
-    this._addClickEvent(cardImage, this.handleImageClick);
+    this._cardImage.src = this.image;
+    this._cardImage.alt = this.text;
+    this._cardTitle.textContent = this.text;
 
-    cardImage.src = this.image;
-    cardImage.alt = this.text;
-    cardTitle.textContent = this.text;
-
-    return cardElement;
+    return this._cardElement;
   }
 }

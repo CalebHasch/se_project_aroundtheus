@@ -44,8 +44,8 @@ const addButton = document.querySelector(".profile__add-button");
 const closeButtons = document.querySelectorAll(".modal__close");
 
 //declare modal elements
-const editForm = document.querySelector("#form-edit-profile");
-const addCardForm = document.querySelector("#form-add-card");
+const editForm = document.forms["form-edit-profile"];
+const addCardForm = document.forms["form-add-card"];
 const modalImage = document.querySelector(".location__image");
 const modalTitle = document.querySelector(".location__title");
 const editModal = document.querySelector("#edit-profile-modal");
@@ -114,11 +114,7 @@ function renderNewCard(e) {
   const title = formTitle.value;
   const imageUrl = formImage.value;
   const cardData = { name: title, link: imageUrl };
-  const cardElement = new Card(
-    cardData,
-    ".locations__card",
-    openLocationModal
-  ).createCard();
+  const cardElement = createCard(cardData);
 
   locations.prepend(cardElement);
 
@@ -126,14 +122,19 @@ function renderNewCard(e) {
   closeModal(addCardModal);
 }
 
+function createCard(cardData) {
+  const cardElement = new Card(
+    cardData,
+    "#locations__card",
+    openLocationModal
+  ).createCard();
+  return cardElement;
+}
+
 // renders default cards
 function renderCards(data) {
   data.forEach((item) => {
-    const cardElement = new Card(
-      item,
-      ".locations__card",
-      openLocationModal
-    ).createCard();
+    const cardElement = createCard(item);
     locations.append(cardElement);
   });
 }
@@ -150,23 +151,20 @@ closeButtons.forEach((button) => {
 //event listeners for profile edit form
 editButton.addEventListener("click", function () {
   openModal(editModal);
-  editFormValidation.checkValidityOnSubmit(validationObj, editModal);
+  editFormValidation.resetValidation();
 });
 editForm.addEventListener("submit", (e) => {
   editProfile(e);
-  editFormValidation.checkValidityOnSubmit(validationObj, editModal);
 });
 
 //event listeners for location add form
 addButton.addEventListener("click", function () {
   openModal(addCardModal);
-  cardFormValidation.checkValidityOnSubmit(validationObj, addCardModal);
+  cardFormValidation.resetValidation();
 });
 addCardForm.addEventListener("submit", (e) => {
   renderNewCard(e);
-  console.log(
-    cardFormValidation.checkValidityOnSubmit(validationObj, addCardModal)
-  );
+  cardFormValidation.toggleSubmitButton();
 });
 
 editFormValidation.enableValidation();
