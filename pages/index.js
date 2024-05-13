@@ -122,6 +122,14 @@ function renderNewCard(e) {
   closeModal(addCardModal);
 }
 
+// renders default cards
+function renderCards(data) {
+  data.forEach((item) => {
+    const cardElement = createCard(item);
+    locations.append(cardElement);
+  });
+}
+
 function createCard(cardData) {
   const cardElement = new Card(
     cardData,
@@ -129,14 +137,6 @@ function createCard(cardData) {
     openLocationModal
   ).createCard();
   return cardElement;
-}
-
-// renders default cards
-function renderCards(data) {
-  data.forEach((item) => {
-    const cardElement = createCard(item);
-    locations.append(cardElement);
-  });
 }
 
 renderCards(initialCards);
