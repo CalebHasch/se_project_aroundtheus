@@ -160,7 +160,6 @@ editForm.addEventListener("submit", (e) => {
 //event listeners for location add form
 addButton.addEventListener("click", function () {
   openModal(addCardModal);
-  cardFormValidation.resetValidation();
 });
 addCardForm.addEventListener("submit", (e) => {
   renderNewCard(e);
