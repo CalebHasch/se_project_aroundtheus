@@ -1,6 +1,7 @@
 import { FormValidator } from "../components/FormValidator.js";
 import { Card } from "../components/card.js";
 import Popup from "../components/Popup.js";
+import PopupWithImage from "../components/PopupWithImage.js";
 
 const initialCards = [
   {
@@ -54,6 +55,9 @@ const addCardModal = document.querySelector("#add-card-modal");
 const locationModal = document.querySelector("#location-modal");
 const editNameInput = document.querySelector("#form__name");
 const editDescriptionInput = document.querySelector("#form__description");
+const cardPopup = new Popup("#add-card-modal");
+const profilePopup = new Popup("#edit-profile-modal");
+const locationPopup = new PopupWithImage("#location-modal");
 let currentModal;
 
 //declare card and profile elements
@@ -151,7 +155,7 @@ closeButtons.forEach((button) => {
 
 //event listeners for profile edit form
 editButton.addEventListener("click", function () {
-  openModal(editModal);
+  profilePopup.openModal();
   editFormValidation.resetValidation();
 });
 editForm.addEventListener("submit", (e) => {
@@ -160,7 +164,7 @@ editForm.addEventListener("submit", (e) => {
 
 //event listeners for location add form
 addButton.addEventListener("click", function () {
-  openModal(addCardModal);
+  cardPopup.openModal();
 });
 addCardForm.addEventListener("submit", (e) => {
   renderNewCard(e);
