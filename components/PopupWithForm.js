@@ -9,16 +9,19 @@ export default class PopupWithForm extends Popup {
 
   _getInputValues() {
     const inputvalues = {
-      link: document.querySelector("#form__image-link"),
-      name: document.querySelector("#form__name"),
-      title: document.querySelector("#form__title"),
-      description: document.querySelector("#form__description"),
+      link: document.querySelector("#form__image-link").value,
+      name: document.querySelector("#form__name").value,
+      title: document.querySelector("#form__title").value,
+      description: document.querySelector("#form__description").value,
     };
     return inputvalues;
   }
 
   setEventListeners() {
     super(setEventListeners);
-    this.form.addEventListener("submit", this.submitFunction());
+    this.form.addEventListener(
+      "submit",
+      this.submitFunction(this._getInputValues())
+    );
   }
 }

@@ -2,6 +2,7 @@ import { FormValidator } from "../components/FormValidator.js";
 import { Card } from "../components/card.js";
 import Popup from "../components/Popup.js";
 import PopupWithImage from "../components/PopupWithImage.js";
+import UserInfo from "../components/UserInfo.js";
 
 const initialCards = [
   {
@@ -66,6 +67,10 @@ const profileName = document.querySelector(".profile__name");
 const profileDescription = document.querySelector(".profile__subtitle");
 const formTitle = document.querySelector("#form__title");
 const formImage = document.querySelector("#form__image-link");
+const userInfo = new UserInfo({
+  nameSelector: ".profile__name",
+  descriptionSelector: ".profile__subtitle",
+});
 
 // validation class
 const editFormValidation = new FormValidator(validationObj, editForm);
@@ -107,8 +112,7 @@ function editProfile(e) {
   const nameVal = editNameInput.value;
   const descriptionVal = editDescriptionInput.value;
 
-  profileName.textContent = nameVal;
-  profileDescription.textContent = descriptionVal;
+  userInfo.setUserInfo({ nameVal, descriptionVal });
   closeModal(editModal);
 }
 
@@ -155,7 +159,8 @@ closeButtons.forEach((button) => {
 
 //event listeners for profile edit form
 editButton.addEventListener("click", function () {
-  profilePopup.openModal();
+  // profilePopup.openModal();
+  openModal(editModal);
   editFormValidation.resetValidation();
 });
 editForm.addEventListener("submit", (e) => {
