@@ -1,27 +1,32 @@
-import Popup from "./Popup";
+import Popup from "./Popup.js";
+import {
+  editNameInput,
+  formLinkInput,
+  formTitleInput,
+  editDescriptionInput,
+} from "../pages/index.js";
 
 export default class PopupWithForm extends Popup {
   constructor(popupSelector, submitFunction) {
     super(popupSelector);
-    this.submitFunction = submitFunction();
-    this.form = this.querySelector("form");
+    this.submit = submitFunction;
+    this.form = this.modal.querySelector(".form");
   }
 
   _getInputValues() {
     const inputvalues = {
-      link: document.querySelector("#form__image-link").value,
-      name: document.querySelector("#form__name").value,
-      title: document.querySelector("#form__title").value,
-      description: document.querySelector("#form__description").value,
+      linkVal: formLinkInput.value,
+      titleVal: formTitleInput.value,
+      nameVal: editNameInput.value,
+      descriptionVal: editDescriptionInput.value,
     };
     return inputvalues;
   }
 
   setEventListeners() {
-    super(setEventListeners);
-    this.form.addEventListener(
-      "submit",
-      this.submitFunction(this._getInputValues())
-    );
+    super.setEventListeners();
+    this.form.addEventListener("submit", (e) => {
+      this.submit(e, this._getInputValues());
+    });
   }
 }

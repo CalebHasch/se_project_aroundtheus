@@ -1,11 +1,10 @@
-import Popup from "../components/Popup.js";
+import Popup from "./Popup.js";
+import { modalImage, modalTitle } from "../pages/index.js";
 
 export default class PopupWithImage extends Popup {
   openModal({ name, link }) {
-    this.title = this.nextElementSibling.textContent;
-
-    this.src = link;
-    this.alt = name;
+    modalImage.src = link;
+    modalImage.alt = name;
     modalTitle.textContent = name;
     super.openModal();
   }
