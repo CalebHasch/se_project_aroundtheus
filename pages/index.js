@@ -1,5 +1,6 @@
 import { FormValidator } from "../components/FormValidator.js";
 import { Card } from "../components/card.js";
+import Section from "../components/Section.js";
 import Popup from "../components/Popup.js";
 import PopupWithImage from "../components/PopupWithImage.js";
 import UserInfo from "../components/UserInfo.js";
@@ -61,6 +62,10 @@ const profilePopup = new Popup("#edit-profile-modal");
 const locationPopup = new PopupWithImage("#location-modal");
 let currentModal;
 
+cardPopup.setEventListeners();
+profilePopup.setEventListeners();
+// locationPopup.setEventListeners();
+
 //declare card and profile elements
 const locations = document.querySelector(".locations");
 const profileName = document.querySelector(".profile__name");
@@ -76,24 +81,11 @@ const userInfo = new UserInfo({
 const editFormValidation = new FormValidator(validationObj, editForm);
 const cardFormValidation = new FormValidator(validationObj, addCardForm);
 
-function closeModalEvent(e) {
-  if (e.target.classList.contains("modal") || e.key == "Escape") {
-    closeModal(currentModal);
-  }
-}
-
-function openModal(modal) {
-  currentModal = modal;
-  modal.classList.add("modal_opened");
-  modal.addEventListener("click", closeModalEvent);
-  document.addEventListener("keydown", closeModalEvent);
-}
-
-function closeModal(modal) {
-  modal.classList.remove("modal_opened");
-  modal.removeEventListener("click", closeModalEvent);
-  document.removeEventListener("keydown", closeModalEvent);
-}
+const cardSection = new Section(
+  { items: initialCards, renderer: createCard },
+  ".locations"
+);
+cardSection.renderItems();
 
 function openLocationModal(e) {
   openModal(locationModal);
@@ -125,18 +117,10 @@ function renderNewCard(e) {
   const cardData = { name: title, link: imageUrl };
   const cardElement = createCard(cardData);
 
-  locations.prepend(cardElement);
+  cardSection.addItem(cardElement, "prepend");
 
   e.target.reset();
-  closeModal(addCardModal);
-}
-
-// renders default cards
-function renderCards(data) {
-  data.forEach((item) => {
-    const cardElement = createCard(item);
-    locations.append(cardElement);
-  });
+  cardPopup.closeModal();
 }
 
 function createCard(cardData) {
@@ -148,19 +132,9 @@ function createCard(cardData) {
   return cardElement;
 }
 
-renderCards(initialCards);
-
-//event listener for all close buttons
-closeButtons.forEach((button) => {
-  const modal = button.closest(".modal");
-
-  button.addEventListener("click", () => closeModal(modal));
-});
-
 //event listeners for profile edit form
 editButton.addEventListener("click", function () {
-  // profilePopup.openModal();
-  openModal(editModal);
+  profilePopup.openModal();
   editFormValidation.resetValidation();
 });
 editForm.addEventListener("submit", (e) => {

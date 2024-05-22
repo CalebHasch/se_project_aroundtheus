@@ -1,12 +1,13 @@
-let popup;
+let currentPopup;
 
 export default class Popup {
   constructor(popupSelector) {
     this.modal = document.querySelector(popupSelector);
-    popup = this;
   }
 
   openModal() {
+    currentPopup = this;
+
     this.modal.classList.add("modal_opened");
     this.modal.addEventListener("click", this._handleEscClose);
     document.addEventListener("keydown", this._handleEscClose);
@@ -19,18 +20,14 @@ export default class Popup {
   }
 
   _handleEscClose(e) {
-    console.log(popup);
     if (e.target.classList.contains("modal") || e.key == "Escape") {
-      popup.closeModal;
-      console.log("check");
+      currentPopup.closeModal();
     }
   }
 
   setEventListeners() {
-    const button = this.modal.closest(".closeButton");
+    const button = this.modal.querySelector(".form__close-button");
 
-    button.addEventListener("click", () => this.modal.closeModal());
-    document.addEventListener("keydown", this._handleEscClose());
-    this.modal.addEventListener("click", this.modal._handleEscClose());
+    button.addEventListener("click", () => this.closeModal());
   }
 }
