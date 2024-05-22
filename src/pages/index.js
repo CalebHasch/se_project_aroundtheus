@@ -1,3 +1,4 @@
+import "./index.css";
 import FormValidator from "../components/FormValidator.js";
 import Card from "../components/card.js";
 import Section from "../components/Section.js";
@@ -58,9 +59,6 @@ const profilePopup = new PopupWithForm("#edit-profile-modal", editProfile);
 const locationPopup = new PopupWithImage("#location-modal");
 
 //declare card and profile elements
-const locations = document.querySelector(".locations");
-const profileName = document.querySelector(".profile__name");
-const profileDescription = document.querySelector(".profile__subtitle");
 const formTitleInput = document.querySelector("#form__title");
 const formLinkInput = document.querySelector("#form__image-link");
 const userInfo = new UserInfo({

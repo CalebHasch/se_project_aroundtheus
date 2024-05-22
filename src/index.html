@@ -4,13 +4,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Around the US</title>
-    <link rel="stylesheet" href="./pages/index.css" />
   </head>
   <body class="page">
     <div class="page__content">
       <header class="header page__section">
         <img
-          src="images/logo.svg"
+          src="<%=require('./images/logo.png')%>"
           class="header__logo"
           alt="Around the US logo"
         />
@@ -97,7 +96,7 @@
         </div>
         <section class="profile page__section">
           <img
-            src="images/jacques-cousteau.jpg"
+            src="<%=require('./images/jacques-cousteau.jpg')%>"
             class="profile__pic"
             alt="Profile picture"
           />
@@ -153,6 +152,5 @@
         <p class="footer__text">&copy; 2024 Around The U.S.</p>
       </footer>
     </div>
-    <script type="module" src="./pages/index.js"></script>
   </body>
 </html>
