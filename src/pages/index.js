@@ -99,9 +99,8 @@ function renderNewCard(e, { titleVal, linkVal }) {
   const title = titleVal;
   const imageUrl = linkVal;
   const cardData = { name: title, link: imageUrl };
-  const cardElement = createCard(cardData);
 
-  cardSection.addItem(cardElement, "prepend");
+  cardSection.addItem(cardData, "prepend");
 
   e.target.reset();
   cardFormValidation.resetValidation();
@@ -110,7 +109,7 @@ function renderNewCard(e, { titleVal, linkVal }) {
 
 function createCard(cardData) {
   const cardElement = new Card(cardData, "#locations__card", () => {
-    locationPopup.openModal(cardData);
+    locationPopup.openModal(cardData, modalImage, modalTitle);
   }).createCard();
   return cardElement;
 }
