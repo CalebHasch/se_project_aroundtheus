@@ -1,13 +1,9 @@
-let currentPopup;
-
 export default class Popup {
   constructor(popupSelector) {
     this.modal = document.querySelector(popupSelector);
   }
 
   openModal() {
-    currentPopup = this;
-
     this.modal.classList.add("modal_opened");
     this.modal.addEventListener("click", this._handleCloseEvent);
     document.addEventListener("keydown", this._handleCloseEvent);
