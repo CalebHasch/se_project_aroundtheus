@@ -77,6 +77,30 @@ class Api {
       },
     });
   }
+
+  likeCard(cardId) {
+    fetch(
+      `https://around-api.en.tripleten-services.com/v1/cards/${cardId}/likes`,
+      {
+        method: "PUT",
+        headers: {
+          authorization: this._authorization,
+        },
+      }
+    );
+  }
+
+  dislikeCard(cardId) {
+    fetch(
+      `https://around-api.en.tripleten-services.com/v1/cards/${cardId}/likes`,
+      {
+        method: "DELETE",
+        headers: {
+          authorization: this._authorization,
+        },
+      }
+    );
+  }
 }
 
 export const api = new Api({

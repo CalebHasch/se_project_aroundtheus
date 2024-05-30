@@ -1,11 +1,20 @@
 export default class Card {
-  constructor(data, cardSelector, handleImageClick, handleTrashClick) {
+  constructor(
+    data,
+    cardSelector,
+    handleImageClick,
+    handleTrashClick,
+    handleLikeClick
+  ) {
     this.image = data.link;
     this.text = data.name;
     this.id = data._id;
+    this.isLiked = data.isLiked;
+    console.log(this.isLiked);
     this.cardTemplate = document.querySelector(cardSelector).content;
     this.handleImageClick = handleImageClick;
     this.handleTrashClick = handleTrashClick;
+    this.handleLikeClick = handleLikeClick;
     this._cardElement = this.cardTemplate
       .querySelector(".locations__card")
       .cloneNode(true);
@@ -17,16 +26,23 @@ export default class Card {
 
   //event listeners for cards
   _setEventListeners() {
-    this._likeButton.addEventListener("click", this._likeCardToggle);
+    this._likeButton.addEventListener("click", () => {
+      this.handleLikeClick(this);
+      this._checkedIfLiked();
+    });
     this._deleteButton.addEventListener("click", () => {
       this.handleTrashClick(this);
     });
     this._cardImage.addEventListener("click", this.handleImageClick);
   }
 
-  _likeCardToggle(e) {
-    e.target.classList.toggle("card__like-icon_clicked");
-  }
+  _checkedIfLiked = () => {
+    if (this.isLiked) {
+      this._likeButton.classList.add("card__like-icon_clicked");
+    } else {
+      this._likeButton.classList.remove("card__like-icon_clicked");
+    }
+  };
 
   _removeCard = () => {
     this._cardElement.remove();
@@ -35,6 +51,7 @@ export default class Card {
   // create a new card
   createCard() {
     this._setEventListeners();
+    this._checkedIfLiked();
 
     this._cardImage.src = this.image;
     this._cardImage.alt = this.text;

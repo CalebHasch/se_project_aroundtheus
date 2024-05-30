@@ -72,9 +72,20 @@ function createCard(cardData) {
     () => {
       locationPopup.openModal(cardData, modalImage, modalTitle);
     },
-    deleteCardPopup.setUpDeleteModal
+    deleteCardPopup.setUpDeleteModal,
+    toggleLike
   ).createCard();
   return cardElement;
+}
+
+function toggleLike(card) {
+  if (card.isLiked) {
+    api.dislikeCard(card.id);
+    card.isLiked = false;
+  } else {
+    api.likeCard(card.id);
+    card.isLiked = true;
+  }
 }
 
 function deleteCard(e) {
