@@ -8,6 +8,14 @@ export default class PopupWithForm extends Popup {
     this.inputs = this.form.querySelectorAll(".form__input");
   }
 
+  setUpDeleteModal = (cardObj) => {
+    this.currentId = cardObj.id;
+    this.removeHandler = cardObj._removeCard;
+    console.log(this.removeHandler);
+    console.log(this.currentId);
+    super.openModal();
+  };
+
   _getInputValues() {
     const inputvalues = {};
     this.inputs.forEach((input) => {

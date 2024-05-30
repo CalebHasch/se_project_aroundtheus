@@ -2,7 +2,7 @@ export default class Card {
   constructor(data, cardSelector, handleImageClick, handleTrashClick) {
     this.image = data.link;
     this.text = data.name;
-    this.id = data.id;
+    this.id = data._id;
     this.cardTemplate = document.querySelector(cardSelector).content;
     this.handleImageClick = handleImageClick;
     this.handleTrashClick = handleTrashClick;
@@ -17,9 +17,10 @@ export default class Card {
 
   //event listeners for cards
   _setEventListeners() {
-    console.log(this.handleTrashClick);
     this._likeButton.addEventListener("click", this._likeCardToggle);
-    this._deleteButton.addEventListener("click", this.handleTrashClick);
+    this._deleteButton.addEventListener("click", () => {
+      this.handleTrashClick(this);
+    });
     this._cardImage.addEventListener("click", this.handleImageClick);
   }
 
@@ -27,11 +28,9 @@ export default class Card {
     e.target.classList.toggle("card__like-icon_clicked");
   }
 
-  _removeCard(e) {
-    console.log("testd");
-    const cardElement = e.target.closest(".card");
-    cardElement.remove();
-  }
+  _removeCard = () => {
+    this._cardElement.remove();
+  };
 
   // create a new card
   createCard() {

@@ -72,15 +72,16 @@ function createCard(cardData) {
     () => {
       locationPopup.openModal(cardData, modalImage, modalTitle);
     },
-    () => {
-      deleteCardPopup.openModal();
-    }
+    deleteCardPopup.setUpDeleteModal
   ).createCard();
   return cardElement;
 }
 
 function deleteCard(e) {
-  console.log("delete");
+  console.log("delete" + this.currentId);
+  api.deleteCard(this.currentId);
+  deleteCardPopup.removeHandler();
+  deleteCardPopup.closeModal();
 }
 
 //event listener for profile edit form
