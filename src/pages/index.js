@@ -1,6 +1,6 @@
 import "./index.css";
 import FormValidator from "../components/FormValidator.js";
-import Card from "../components/card.js";
+import Card from "../components/Card.js";
 import Section from "../components/Section.js";
 import PopupWithImage from "../components/PopupWithImage.js";
 import UserInfo from "../components/UserInfo.js";
@@ -20,16 +20,14 @@ import {
 
 const cardPopup = new PopupWithForm("#add-card-modal", renderNewCard);
 const profilePopup = new PopupWithForm("#edit-profile-modal", editProfile);
+const deleteCardPopup = new PopupWithForm("#delete-card-modal", deleteCard);
 const locationPopup = new PopupWithImage("#location-modal");
 
 const userInfo = new UserInfo({
   nameSelector: ".profile__name",
   descriptionSelector: ".profile__subtitle",
 });
-const cardSection = new Section(
-  { items: initialCards, renderer: createCard },
-  ".locations"
-);
+const cardSection = new Section({ renderer: createCard }, ".locations");
 
 // validation class
 const editFormValidation = new FormValidator(validationObj, editForm);
@@ -39,16 +37,18 @@ const cardFormValidation = new FormValidator(validationObj, addCardForm);
 cardPopup.setEventListeners();
 profilePopup.setEventListeners();
 locationPopup.setEventListeners();
+deleteCardPopup.setEventListeners();
 
-cardSection.renderItems();
+api.getInitialCards().then((cards) => cardSection.renderItems(cards));
 
-api.getUserInfo();
+api.getUserInfo().then((data) => userInfo.setUserInfo(data));
 
 editFormValidation.enableValidation();
 cardFormValidation.enableValidation();
 
 // edits the user profile based off form inputs
 function editProfile(e, { name, description }) {
+  api.updateUserInfo({ name, description });
   userInfo.setUserInfo({ name, description });
   profilePopup.closeModal();
 }
@@ -57,6 +57,7 @@ function editProfile(e, { name, description }) {
 function renderNewCard(e, { title, link }) {
   const cardData = { name: title, link };
 
+  api.postCard(cardData);
   cardSection.addItem(cardData, "prepend");
 
   e.target.reset();
@@ -65,19 +66,32 @@ function renderNewCard(e, { title, link }) {
 }
 
 function createCard(cardData) {
-  const cardElement = new Card(cardData, "#locations__card", () => {
-    locationPopup.openModal(cardData, modalImage, modalTitle);
-  }).createCard();
+  const cardElement = new Card(
+    cardData,
+    "#locations__card",
+    () => {
+      locationPopup.openModal(cardData, modalImage, modalTitle);
+    },
+    () => {
+      deleteCardPopup.openModal();
+    }
+  ).createCard();
   return cardElement;
 }
 
-//event listeners for profile edit form
+function deleteCard(e) {
+  console.log("delete");
+}
+
+//event listener for profile edit form
 editButton.addEventListener("click", function () {
   profilePopup.openModal();
   editFormValidation.resetValidation();
 });
 
-//event listeners for location add form
+//event listener for location add form
 addButton.addEventListener("click", function () {
   cardPopup.openModal();
 });
+
+//event listener for delete card modal

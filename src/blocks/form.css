@@ -22,6 +22,10 @@
   line-height: 1.23;
 }
 
+.form__title_bottom-margin {
+  margin-bottom: 38px;
+}
+
 .form__set {
   font-size: 14px;
   font-weight: 400;
