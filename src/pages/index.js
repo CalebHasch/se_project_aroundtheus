@@ -12,45 +12,66 @@ import {
   validationObj,
   editButton,
   addButton,
+  profileImage,
+  profilePicForm,
   editForm,
   addCardForm,
   modalImage,
   modalTitle,
 } from "../utils/constants.js";
 
-const cardPopup = new PopupWithForm("#add-card-modal", renderNewCard);
-const profilePopup = new PopupWithForm("#edit-profile-modal", editProfile);
-const deleteCardPopup = new PopupWithForm("#delete-card-modal", deleteCard);
-const locationPopup = new PopupWithImage("#location-modal");
+const popups = {
+  cardPopup: new PopupWithForm("#add-card-modal", renderNewCard),
+  profilePopup: new PopupWithForm("#edit-profile-modal", editProfile),
+  deleteCardPopup: new PopupWithForm("#delete-card-modal", deleteCard),
+  profilePicPopup: new PopupWithForm("#profile-pic-modal", editProfilePic),
+  locationPopup: new PopupWithImage("#location-modal"),
+};
 
-const userInfo = new UserInfo({
-  nameSelector: ".profile__name",
-  descriptionSelector: ".profile__subtitle",
-});
+const userInfo = new UserInfo(
+  {
+    nameSelector: ".profile__name",
+    descriptionSelector: ".profile__subtitle",
+  },
+  profileImage
+);
 const cardSection = new Section({ renderer: createCard }, ".locations");
 
 // validation class
-const editFormValidation = new FormValidator(validationObj, editForm);
-const cardFormValidation = new FormValidator(validationObj, addCardForm);
+const formValidators = {
+  editFormValidation: new FormValidator(validationObj, editForm),
+  cardFormValidation: new FormValidator(validationObj, addCardForm),
+  picFormValidation: new FormValidator(validationObj, profilePicForm),
+};
 
 // initail setup
-cardPopup.setEventListeners();
-profilePopup.setEventListeners();
-locationPopup.setEventListeners();
-deleteCardPopup.setEventListeners();
+for (let popup in popups) {
+  popups[popup].setEventListeners();
+}
+
+for (let form in formValidators) {
+  formValidators[form].enableValidation();
+}
 
 api.getInitialCards().then((cards) => cardSection.renderItems(cards));
 
-api.getUserInfo().then((data) => userInfo.setUserInfo(data));
-
-editFormValidation.enableValidation();
-cardFormValidation.enableValidation();
+api.getUserInfo().then((data) => {
+  userInfo.setUserInfo(data);
+  userInfo.setUserImage(data);
+});
 
 // edits the user profile based off form inputs
 function editProfile(e, { name, description }) {
   api.updateUserInfo({ name, description });
   userInfo.setUserInfo({ name, description });
-  profilePopup.closeModal();
+  popups.profilePopup.closeModal();
+}
+
+function editProfilePic(e, { avatar }) {
+  console.log("pic changed");
+  api.updateUserImage({ avatar });
+  userInfo.setUserImage({ avatar });
+  popups.profilePicPopup.closeModal();
 }
 
 // renders card created by user
@@ -61,8 +82,8 @@ function renderNewCard(e, { title, link }) {
   cardSection.addItem(cardData, "prepend");
 
   e.target.reset();
-  cardFormValidation.toggleSubmitButton();
-  cardPopup.closeModal();
+  formValidators.cardFormValidation.toggleSubmitButton();
+  popups.cardPopup.closeModal();
 }
 
 function createCard(cardData) {
@@ -72,7 +93,7 @@ function createCard(cardData) {
     () => {
       locationPopup.openModal(cardData, modalImage, modalTitle);
     },
-    deleteCardPopup.setUpDeleteModal,
+    popups.deleteCardPopup.setUpDeleteModal,
     toggleLike
   ).createCard();
   return cardElement;
@@ -91,19 +112,22 @@ function toggleLike(card) {
 function deleteCard(e) {
   console.log("delete" + this.currentId);
   api.deleteCard(this.currentId);
-  deleteCardPopup.removeHandler();
-  deleteCardPopup.closeModal();
+  popups.deleteCardPopup.removeHandler();
+  popups.deleteCardPopup.closeModal();
 }
 
 //event listener for profile edit form
 editButton.addEventListener("click", function () {
-  profilePopup.openModal();
-  editFormValidation.resetValidation();
+  popups.profilePopup.openModal();
+  formValidators.editFormValidation.resetValidation();
 });
 
 //event listener for location add form
 addButton.addEventListener("click", function () {
-  cardPopup.openModal();
+  popups.cardPopup.openModal();
 });
 
-//event listener for delete card modal
+//event listener for profile pic form
+profileImage.addEventListener("click", function () {
+  popups.profilePicPopup.openModal();
+});

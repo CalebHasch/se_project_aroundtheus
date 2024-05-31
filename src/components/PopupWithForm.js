@@ -11,8 +11,6 @@ export default class PopupWithForm extends Popup {
   setUpDeleteModal = (cardObj) => {
     this.currentId = cardObj.id;
     this.removeHandler = cardObj._removeCard;
-    console.log(this.removeHandler);
-    console.log(this.currentId);
     super.openModal();
   };
 

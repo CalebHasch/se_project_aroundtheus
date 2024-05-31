@@ -15,6 +15,30 @@
         />
       </header>
       <main class="content">
+        <div class="modal" id="profile-pic-modal">
+          <form class="modal__form form" id="form-profile-pic">
+            <button
+              class="form__close-button modal__close"
+              type="button"
+              aria-label="close"
+            ></button>
+            <h2 class="form__title">Change profile picture</h2>
+            <fieldset class="form__set">
+              <label class="form__field">
+                <input
+                  type="url"
+                  class="form__input"
+                  id="form__profile-image"
+                  name="avatar"
+                  placeholder="Image link"
+                  required
+                />
+                <span class="form__error"></span>
+              </label>
+            </fieldset>
+            <button type="submit" class="form__submit-button">Save</button>
+          </form>
+        </div>
         <div class="modal" id="edit-profile-modal">
           <form class="modal__form form" id="form-edit-profile">
             <button
@@ -99,18 +123,25 @@
           </form>
         </div>
         <section class="profile page__section">
-          <img
-            src="<%=require('./images/jacques-cousteau.jpg')%>"
-            class="profile__pic"
-            alt="Profile picture"
-          />
+          <div class="profile__image-container">
+            <img
+              src="<%=require('./images/jacques-cousteau.png')%>"
+              class="profile__pic"
+              alt="Profile picture"
+            />
+            <button
+              class="profile__pic-edit"
+              type="button"
+              aria-label="Edit profile picture"
+            ></button>
+          </div>
           <div class="profile__container">
             <h1 class="profile__name">Jacques Cousteau</h1>
             <button
               class="profile__edit-button"
               id="profile__edit-button"
               type="button"
-              aria-label="edit"
+              aria-label="edit profile"
             ></button>
             <p class="profile__subtitle">Explorer</p>
           </div>

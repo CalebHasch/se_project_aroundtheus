@@ -10,7 +10,6 @@ export default class Card {
     this.text = data.name;
     this.id = data._id;
     this.isLiked = data.isLiked;
-    console.log(this.isLiked);
     this.cardTemplate = document.querySelector(cardSelector).content;
     this.handleImageClick = handleImageClick;
     this.handleTrashClick = handleTrashClick;

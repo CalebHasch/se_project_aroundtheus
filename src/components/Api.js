@@ -36,6 +36,19 @@ class Api {
     });
   }
 
+  updateUserImage({ avatar }) {
+    fetch("https://around-api.en.tripleten-services.com/v1/users/me/avatar", {
+      method: "PATCH",
+      headers: {
+        authorization: this._authorization,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        avatar: avatar,
+      }),
+    });
+  }
+
   getInitialCards() {
     return fetch("https://around-api.en.tripleten-services.com/v1/cards", {
       headers: {
