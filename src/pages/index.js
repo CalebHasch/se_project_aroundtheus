@@ -53,18 +53,21 @@ for (let form in formValidators) {
   formValidators[form].enableValidation();
 }
 
-api.getInitialCards().then((cards) => cardSection.renderItems(cards));
-
-api.getUserInfo().then((data) => {
-  userInfo.setUserInfo(data);
-  userInfo.setUserImage(data);
-});
+api
+  .getAll()
+  .then((data) => {
+    userInfo.setUserInfo(data[0]);
+    userInfo.setUserImage(data[0]);
+    return data;
+  })
+  .then((data) => {
+    cardSection.renderItems(data[1]);
+  });
 
 // edits the user profile based off form inputs
 function editProfile(e, { name, description }) {
   api.updateUserInfo({ name, description });
   userInfo.setUserInfo({ name, description });
-  popups.profilePopup.closeModal();
 }
 
 function editProfilePic(e, { avatar }) {
@@ -119,6 +122,7 @@ function deleteCard(e) {
 //event listener for profile edit form
 editButton.addEventListener("click", function () {
   popups.profilePopup.openModal();
+  popups.profilePopup.setInputs();
   formValidators.editFormValidation.resetValidation();
 });
 

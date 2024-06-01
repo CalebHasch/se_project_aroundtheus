@@ -33,7 +33,18 @@ class Api {
         name: name,
         about: description,
       }),
-    });
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+        return Promise.reject(`Error: ${res.status}`);
+      })
+      .then((res) => {
+        console.log(res);
+        return res;
+      })
+      .catch((err) => console.error(err));
   }
 
   updateUserImage({ avatar }) {
@@ -46,7 +57,18 @@ class Api {
       body: JSON.stringify({
         avatar: avatar,
       }),
-    });
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+        return Promise.reject(`Error: ${res.status}`);
+      })
+      .then((res) => {
+        console.log(res);
+        return res;
+      })
+      .catch((err) => console.error(err));
   }
 
   getInitialCards() {
@@ -62,7 +84,6 @@ class Api {
         return Promise.reject(`Error: ${res.status}`);
       })
       .then((res) => {
-        console.log(res);
         return res;
       })
       .catch((err) => console.error(err));
@@ -111,6 +132,14 @@ class Api {
         headers: {
           authorization: this._authorization,
         },
+      }
+    );
+  }
+
+  getAll() {
+    return Promise.all([this.getUserInfo(), this.getInitialCards()]).then(
+      (data) => {
+        return data;
       }
     );
   }
