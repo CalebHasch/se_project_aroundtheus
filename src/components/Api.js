@@ -41,7 +41,6 @@ class Api {
         return Promise.reject(`Error: ${res.status}`);
       })
       .then((res) => {
-        console.log(res);
         return res;
       })
       .catch((err) => console.error(err));
@@ -65,7 +64,6 @@ class Api {
         return Promise.reject(`Error: ${res.status}`);
       })
       .then((res) => {
-        console.log(res);
         return res;
       })
       .catch((err) => console.error(err));
@@ -100,7 +98,18 @@ class Api {
         name: name,
         link: link,
       }),
-    });
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+        return Promise.reject(`Error: ${res.status}`);
+      })
+      .then((res) => {
+        console.log(res);
+        return res;
+      })
+      .catch((err) => console.error(err));
   }
 
   deleteCard(cardId) {
@@ -109,7 +118,17 @@ class Api {
       headers: {
         authorization: this._authorization,
       },
-    });
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+        return Promise.reject(`Error: ${res.status}`);
+      })
+      .then((res) => {
+        return res;
+      })
+      .catch((err) => console.error(err));
   }
 
   likeCard(cardId) {
@@ -121,7 +140,17 @@ class Api {
           authorization: this._authorization,
         },
       }
-    );
+    )
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+        return Promise.reject(`Error: ${res.status}`);
+      })
+      .then((res) => {
+        return res;
+      })
+      .catch((err) => console.error(err));
   }
 
   dislikeCard(cardId) {
@@ -133,7 +162,17 @@ class Api {
           authorization: this._authorization,
         },
       }
-    );
+    )
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+        return Promise.reject(`Error: ${res.status}`);
+      })
+      .then((res) => {
+        return res;
+      })
+      .catch((err) => console.error(err));
   }
 
   getAll() {

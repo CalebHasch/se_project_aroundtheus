@@ -61,6 +61,7 @@ api
     return data;
   })
   .then((data) => {
+    popups.profilePopup.setInputs(userInfo.getUserInfo());
     cardSection.renderItems(data[1]);
   });
 
@@ -71,22 +72,23 @@ function editProfile(e, { name, description }) {
 }
 
 function editProfilePic(e, { avatar }) {
-  console.log("pic changed");
   api.updateUserImage({ avatar });
   userInfo.setUserImage({ avatar });
-  popups.profilePicPopup.closeModal();
+  e.target.reset();
+  formValidators.picFormValidation.toggleSubmitButton();
 }
 
 // renders card created by user
 function renderNewCard(e, { title, link }) {
   const cardData = { name: title, link };
 
-  api.postCard(cardData);
-  cardSection.addItem(cardData, "prepend");
+  new Promise((resolve) => resolve(api.postCard(cardData))).finally((data) => {
+    console.log(data);
+    cardSection.addItem(data, "prepend");
+  });
 
   e.target.reset();
   formValidators.cardFormValidation.toggleSubmitButton();
-  popups.cardPopup.closeModal();
 }
 
 function createCard(cardData) {
@@ -116,13 +118,11 @@ function deleteCard(e) {
   console.log("delete" + this.currentId);
   api.deleteCard(this.currentId);
   popups.deleteCardPopup.removeHandler();
-  popups.deleteCardPopup.closeModal();
 }
 
 //event listener for profile edit form
 editButton.addEventListener("click", function () {
   popups.profilePopup.openModal();
-  popups.profilePopup.setInputs();
   formValidators.editFormValidation.resetValidation();
 });
 
