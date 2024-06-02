@@ -67,28 +67,44 @@ api
 
 // edits the user profile based off form inputs
 function editProfile(e, { name, description }) {
-  api.updateUserInfo({ name, description });
-  userInfo.setUserInfo({ name, description });
+  api
+    .updateUserInfo({ name, description })
+    .then(() => {
+      userInfo.setUserInfo({ name, description });
+      popups.profilePopup.closeModal();
+      popups.profilePopup.renderLoading();
+    })
+    .catch((err) => console.error(err));
 }
 
 function editProfilePic(e, { avatar }) {
-  api.updateUserImage({ avatar });
-  userInfo.setUserImage({ avatar });
-  e.target.reset();
-  formValidators.picFormValidation.toggleSubmitButton();
+  api
+    .updateUserImage({ avatar })
+    .then(() => {
+      userInfo.setUserImage({ avatar });
+      popups.profilePicPopup.closeModal();
+      popups.profilePicPopup.renderLoading();
+      e.target.reset();
+      formValidators.picFormValidation.toggleSubmitButton();
+    })
+    .catch((err) => console.error(err));
 }
 
 // renders card created by user
 function renderNewCard(e, { title, link }) {
   const cardData = { name: title, link };
 
-  new Promise((resolve) => resolve(api.postCard(cardData))).finally((data) => {
-    console.log(data);
-    cardSection.addItem(data, "prepend");
-  });
-
-  e.target.reset();
-  formValidators.cardFormValidation.toggleSubmitButton();
+  api
+    .postCard(cardData)
+    .then((data) => {
+      cardSection.addItem(data, "prepend");
+      e.target.reset();
+      formValidators.cardFormValidation.toggleSubmitButton();
+      popups.cardPopup.closeModal();
+      popups.cardPopup.renderLoading();
+      return data;
+    })
+    .catch((err) => console.error(err));
 }
 
 function createCard(cardData) {
@@ -96,7 +112,7 @@ function createCard(cardData) {
     cardData,
     "#locations__card",
     () => {
-      locationPopup.openModal(cardData, modalImage, modalTitle);
+      popups.locationPopup.openModal(cardData, modalImage, modalTitle);
     },
     popups.deleteCardPopup.setUpDeleteModal,
     toggleLike
@@ -104,20 +120,33 @@ function createCard(cardData) {
   return cardElement;
 }
 
-function toggleLike(card) {
-  if (card.isLiked) {
-    api.dislikeCard(card.id);
-    card.isLiked = false;
-  } else {
-    api.likeCard(card.id);
-    card.isLiked = true;
-  }
+function deleteCard() {
+  api
+    .deleteCard(this.currentId)
+    .then(() => {
+      popups.deleteCardPopup.removeHandler();
+      popups.deleteCardPopup.closeModal();
+      popups.deleteCardPopup.renderLoading();
+    })
+    .catch((err) => console.error(err));
 }
 
-function deleteCard(e) {
-  console.log("delete" + this.currentId);
-  api.deleteCard(this.currentId);
-  popups.deleteCardPopup.removeHandler();
+function toggleLike(card) {
+  if (card.isLiked) {
+    api
+      .dislikeCard(card.id)
+      .then(() => {
+        card.isLiked = false;
+      })
+      .catch((err) => console.error(err));
+  } else {
+    api
+      .likeCard(card.id)
+      .then(() => {
+        card.isLiked = true;
+      })
+      .catch((err) => console.error(err));
+  }
 }
 
 //event listener for profile edit form

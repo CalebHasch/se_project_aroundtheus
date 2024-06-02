@@ -23,7 +23,7 @@ class Api {
   }
 
   updateUserInfo({ name, description }) {
-    fetch("https://around-api.en.tripleten-services.com/v1/users/me", {
+    return fetch("https://around-api.en.tripleten-services.com/v1/users/me", {
       method: "PATCH",
       headers: {
         authorization: this._authorization,
@@ -33,40 +33,33 @@ class Api {
         name: name,
         about: description,
       }),
-    })
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-        return Promise.reject(`Error: ${res.status}`);
-      })
-      .then((res) => {
-        return res;
-      })
-      .catch((err) => console.error(err));
+    }).then((res) => {
+      if (res.ok) {
+        return res.json();
+      }
+      return Promise.reject(`Error: ${res.status}`);
+    });
   }
 
   updateUserImage({ avatar }) {
-    fetch("https://around-api.en.tripleten-services.com/v1/users/me/avatar", {
-      method: "PATCH",
-      headers: {
-        authorization: this._authorization,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        avatar: avatar,
-      }),
-    })
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-        return Promise.reject(`Error: ${res.status}`);
-      })
-      .then((res) => {
-        return res;
-      })
-      .catch((err) => console.error(err));
+    return fetch(
+      "https://around-api.en.tripleten-services.com/v1/users/me/avatar",
+      {
+        method: "PATCH",
+        headers: {
+          authorization: this._authorization,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          avatar: avatar,
+        }),
+      }
+    ).then((res) => {
+      if (res.ok) {
+        return res.json();
+      }
+      return Promise.reject(`Error: ${res.status}`);
+    });
   }
 
   getInitialCards() {
@@ -88,7 +81,7 @@ class Api {
   }
 
   postCard({ name, link }) {
-    fetch("https://around-api.en.tripleten-services.com/v1/cards", {
+    return fetch("https://around-api.en.tripleten-services.com/v1/cards", {
       method: "POST",
       headers: {
         authorization: this._authorization,
@@ -98,41 +91,33 @@ class Api {
         name: name,
         link: link,
       }),
-    })
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-        return Promise.reject(`Error: ${res.status}`);
-      })
-      .then((res) => {
-        console.log(res);
-        return res;
-      })
-      .catch((err) => console.error(err));
+    }).then((res) => {
+      if (res.ok) {
+        return res.json();
+      }
+      return Promise.reject(`Error: ${res.status}`);
+    });
   }
 
   deleteCard(cardId) {
-    fetch(`https://around-api.en.tripleten-services.com/v1/cards/${cardId}`, {
-      method: "DELETE",
-      headers: {
-        authorization: this._authorization,
-      },
-    })
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-        return Promise.reject(`Error: ${res.status}`);
-      })
-      .then((res) => {
-        return res;
-      })
-      .catch((err) => console.error(err));
+    return fetch(
+      `https://around-api.en.tripleten-services.com/v1/cards/${cardId}`,
+      {
+        method: "DELETE",
+        headers: {
+          authorization: this._authorization,
+        },
+      }
+    ).then((res) => {
+      if (res.ok) {
+        return res.json();
+      }
+      return Promise.reject(`Error: ${res.status}`);
+    });
   }
 
   likeCard(cardId) {
-    fetch(
+    return fetch(
       `https://around-api.en.tripleten-services.com/v1/cards/${cardId}/likes`,
       {
         method: "PUT",
@@ -140,21 +125,16 @@ class Api {
           authorization: this._authorization,
         },
       }
-    )
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-        return Promise.reject(`Error: ${res.status}`);
-      })
-      .then((res) => {
-        return res;
-      })
-      .catch((err) => console.error(err));
+    ).then((res) => {
+      if (res.ok) {
+        return res.json();
+      }
+      return Promise.reject(`Error: ${res.status}`);
+    });
   }
 
   dislikeCard(cardId) {
-    fetch(
+    return fetch(
       `https://around-api.en.tripleten-services.com/v1/cards/${cardId}/likes`,
       {
         method: "DELETE",
@@ -162,17 +142,12 @@ class Api {
           authorization: this._authorization,
         },
       }
-    )
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-        return Promise.reject(`Error: ${res.status}`);
-      })
-      .then((res) => {
-        return res;
-      })
-      .catch((err) => console.error(err));
+    ).then((res) => {
+      if (res.ok) {
+        return res.json();
+      }
+      return Promise.reject(`Error: ${res.status}`);
+    });
   }
 
   getAll() {

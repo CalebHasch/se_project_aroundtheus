@@ -12,7 +12,11 @@ export default class PopupWithForm extends Popup {
 
   renderLoading(isLoading) {
     if (isLoading) {
-      this.button.textContent = "Saving...";
+      if (this.form.id === "form-delete-card") {
+        this.button.textContent = "Deleting...";
+      } else {
+        this.button.textContent = "Saving...";
+      }
     } else {
       this.button.textContent = this.buttonText;
     }
@@ -44,13 +48,7 @@ export default class PopupWithForm extends Popup {
     this.form.addEventListener("submit", (e) => {
       e.preventDefault();
       this.renderLoading(true);
-      new Promise((resolve) => resolve(this.submit(e, this._getInputValues())))
-        .then((res) => {
-          this.renderLoading();
-        })
-        .then((res) => {
-          this.closeModal();
-        });
+      new Promise((resolve) => resolve(this.submit(e, this._getInputValues())));
     });
   }
 }
