@@ -8,7 +8,6 @@ import PopupWithForm from "../components/PopupWithForm.js";
 import { api } from "../components/Api.js";
 
 import {
-  initialCards,
   validationObj,
   editButton,
   addButton,
