@@ -21,7 +21,6 @@ const modalImage = document.querySelector(".location__image");
 const modalTitle = document.querySelector(".location__title");
 
 export {
-  initialCards,
   validationObj,
   editButton,
   addButton,

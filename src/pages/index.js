@@ -54,18 +54,17 @@ for (let form in formValidators) {
 
 api
   .getAll()
-  .then((data) => {
-    userInfo.setUserInfo(data[0]);
-    userInfo.setUserImage(data[0]);
-    return data;
-  })
-  .then((data) => {
+  .then(([userData, cardsData]) => {
+    userInfo.setUserInfo(userData);
+    userInfo.setUserImage(userData);
     popups.profilePopup.setInputs(userInfo.getUserInfo());
-    cardSection.renderItems(data[1]);
-  });
+    cardSection.renderItems(cardsData);
+  })
+  .catch((err) => console.error(err));
 
 // edits the user profile based off form inputs
-function editProfile(e, { name, description }) {
+function editProfile({ name, description }) {
+  popups.profilePopup.renderLoading(true);
   api
     .updateUserInfo({ name, description })
     .then(() => {
@@ -76,34 +75,36 @@ function editProfile(e, { name, description }) {
     .catch((err) => console.error(err));
 }
 
-function editProfilePic(e, { avatar }) {
+function editProfilePic({ avatar }) {
+  popups.profilePicPopup.renderLoading(true);
   api
     .updateUserImage({ avatar })
     .then(() => {
       userInfo.setUserImage({ avatar });
       popups.profilePicPopup.closeModal();
       popups.profilePicPopup.renderLoading();
-      e.target.reset();
-      formValidators.picFormValidation.toggleSubmitButton();
+      popups.profilePicPopup.form.reset();
     })
-    .catch((err) => console.error(err));
+    .catch((err) => console.error(err))
+    .finally(() => formValidators.picFormValidation.toggleSubmitButton());
 }
 
 // renders card created by user
-function renderNewCard(e, { title, link }) {
+function renderNewCard({ title, link }) {
   const cardData = { name: title, link };
 
+  popups.cardPopup.renderLoading(true);
   api
     .postCard(cardData)
     .then((data) => {
       cardSection.addItem(data, "prepend");
-      e.target.reset();
-      formValidators.cardFormValidation.toggleSubmitButton();
+      popups.cardPopup.form.reset();
       popups.cardPopup.closeModal();
       popups.cardPopup.renderLoading();
-      return data;
+      // return data;
     })
-    .catch((err) => console.error(err));
+    .catch((err) => console.error(err))
+    .finally(() => formValidators.cardFormValidation.toggleSubmitButton());
 }
 
 function createCard(cardData) {
@@ -120,6 +121,7 @@ function createCard(cardData) {
 }
 
 function deleteCard() {
+  popups.deleteCardPopup.renderLoading(true);
   api
     .deleteCard(this.currentId)
     .then(() => {
@@ -131,18 +133,21 @@ function deleteCard() {
 }
 
 function toggleLike(card) {
+  console.log(card.id);
   if (card.isLiked) {
     api
       .dislikeCard(card.id)
-      .then(() => {
+      .then((res) => {
         card.isLiked = false;
+        card.checkedIfLiked();
       })
       .catch((err) => console.error(err));
   } else {
     api
       .likeCard(card.id)
-      .then(() => {
+      .then((res) => {
         card.isLiked = true;
+        card.checkedIfLiked();
       })
       .catch((err) => console.error(err));
   }

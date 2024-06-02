@@ -27,7 +27,6 @@ export default class Card {
   _setEventListeners() {
     this._likeButton.addEventListener("click", () => {
       this.handleLikeClick(this);
-      this._checkedIfLiked();
     });
     this._deleteButton.addEventListener("click", () => {
       this.handleTrashClick(this);
@@ -35,7 +34,7 @@ export default class Card {
     this._cardImage.addEventListener("click", this.handleImageClick);
   }
 
-  _checkedIfLiked = () => {
+  checkedIfLiked = () => {
     if (this.isLiked) {
       this._likeButton.classList.add("card__like-icon_clicked");
     } else {
@@ -50,7 +49,7 @@ export default class Card {
   // create a new card
   createCard() {
     this._setEventListeners();
-    this._checkedIfLiked();
+    this.checkedIfLiked();
 
     this._cardImage.src = this.image;
     this._cardImage.alt = this.text;
