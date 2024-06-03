@@ -12,21 +12,11 @@ export default class PopupWithForm extends Popup {
 
   renderLoading(isLoading) {
     if (isLoading) {
-      if (this.form.id === "form-delete-card") {
-        this.button.textContent = "Deleting...";
-      } else {
-        this.button.textContent = "Saving...";
-      }
+      this.button.textContent = "Saving...";
     } else {
       this.button.textContent = this.buttonText;
     }
   }
-
-  setUpDeleteModal = (cardObj) => {
-    this.currentId = cardObj.id;
-    this.removeHandler = cardObj._removeCard;
-    super.openModal();
-  };
 
   _getInputValues() {
     const inputvalues = {};

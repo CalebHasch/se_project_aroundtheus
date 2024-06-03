@@ -5,6 +5,7 @@ import Section from "../components/Section.js";
 import PopupWithImage from "../components/PopupWithImage.js";
 import UserInfo from "../components/UserInfo.js";
 import PopupWithForm from "../components/PopupWithForm.js";
+import PopupWithConfirmation from "../components/PopupWithConfirmation.js";
 import { api } from "../components/Api.js";
 
 import {
@@ -22,8 +23,8 @@ import {
 const popups = {
   cardPopup: new PopupWithForm("#add-card-modal", renderNewCard),
   profilePopup: new PopupWithForm("#edit-profile-modal", editProfile),
-  deleteCardPopup: new PopupWithForm("#delete-card-modal", deleteCard),
   profilePicPopup: new PopupWithForm("#profile-pic-modal", editProfilePic),
+  deleteCardPopup: new PopupWithConfirmation("#delete-card-modal", deleteCard),
   locationPopup: new PopupWithImage("#location-modal"),
 };
 
@@ -70,9 +71,9 @@ function editProfile({ name, description }) {
     .then(() => {
       userInfo.setUserInfo({ name, description });
       popups.profilePopup.closeModal();
-      popups.profilePopup.renderLoading();
     })
-    .catch((err) => console.error(err));
+    .catch((err) => console.error(err))
+    .finally(() => popups.profilePopup.renderLoading(false));
 }
 
 function editProfilePic({ avatar }) {
@@ -82,11 +83,11 @@ function editProfilePic({ avatar }) {
     .then(() => {
       userInfo.setUserImage({ avatar });
       popups.profilePicPopup.closeModal();
-      popups.profilePicPopup.renderLoading();
       popups.profilePicPopup.form.reset();
+      formValidators.picFormValidation.toggleSubmitButton();
     })
     .catch((err) => console.error(err))
-    .finally(() => formValidators.picFormValidation.toggleSubmitButton());
+    .finally(() => popups.profilePicPopup.renderLoading(false));
 }
 
 // renders card created by user
@@ -100,11 +101,11 @@ function renderNewCard({ title, link }) {
       cardSection.addItem(data, "prepend");
       popups.cardPopup.form.reset();
       popups.cardPopup.closeModal();
-      popups.cardPopup.renderLoading();
+      formValidators.cardFormValidation.toggleSubmitButton();
       // return data;
     })
     .catch((err) => console.error(err))
-    .finally(() => formValidators.cardFormValidation.toggleSubmitButton());
+    .finally(() => popups.cardPopup.renderLoading(false));
 }
 
 function createCard(cardData) {
@@ -114,40 +115,46 @@ function createCard(cardData) {
     () => {
       popups.locationPopup.openModal(cardData, modalImage, modalTitle);
     },
-    popups.deleteCardPopup.setUpDeleteModal,
+    openDeleteModal,
     toggleLike
   ).createCard();
   return cardElement;
 }
 
-function deleteCard() {
+function openDeleteModal(card) {
+  popups.deleteCardPopup.openModal();
+  popups.deleteCardPopup.setAction(() => {
+    deleteCard(card);
+  });
+}
+
+function deleteCard(card) {
   popups.deleteCardPopup.renderLoading(true);
   api
-    .deleteCard(this.currentId)
+    .deleteCard(card.id)
     .then(() => {
-      popups.deleteCardPopup.removeHandler();
+      card.removeCard();
       popups.deleteCardPopup.closeModal();
-      popups.deleteCardPopup.renderLoading();
     })
-    .catch((err) => console.error(err));
+    .catch((err) => console.error(err))
+    .finally(() => popups.deleteCardPopup.renderLoading(false));
 }
 
 function toggleLike(card) {
-  console.log(card.id);
   if (card.isLiked) {
     api
       .dislikeCard(card.id)
       .then((res) => {
-        card.isLiked = false;
-        card.checkedIfLiked();
+        card.isLiked = res.isLiked;
+        card.renderLikes();
       })
       .catch((err) => console.error(err));
   } else {
     api
       .likeCard(card.id)
       .then((res) => {
-        card.isLiked = true;
-        card.checkedIfLiked();
+        card.isLiked = res.isLiked;
+        card.renderLikes();
       })
       .catch((err) => console.error(err));
   }

@@ -34,7 +34,7 @@ export default class Card {
     this._cardImage.addEventListener("click", this.handleImageClick);
   }
 
-  checkedIfLiked = () => {
+  renderLikes = () => {
     if (this.isLiked) {
       this._likeButton.classList.add("card__like-icon_clicked");
     } else {
@@ -42,14 +42,14 @@ export default class Card {
     }
   };
 
-  _removeCard = () => {
+  removeCard = () => {
     this._cardElement.remove();
   };
 
   // create a new card
   createCard() {
     this._setEventListeners();
-    this.checkedIfLiked();
+    this.renderLikes();
 
     this._cardImage.src = this.image;
     this._cardImage.alt = this.text;
