@@ -15,6 +15,36 @@
         />
       </header>
       <main class="content">
+        <div class="modal" id="profile-pic-modal">
+          <form class="modal__form form" id="form-profile-pic">
+            <button
+              class="form__close-button modal__close"
+              type="button"
+              aria-label="close"
+            ></button>
+            <h2 class="form__title">Change profile picture</h2>
+            <fieldset class="form__set">
+              <label class="form__field">
+                <input
+                  type="url"
+                  class="form__input"
+                  id="form__profile-image"
+                  name="avatar"
+                  placeholder="Image link"
+                  required
+                />
+                <span class="form__error"></span>
+              </label>
+            </fieldset>
+            <button
+              type="submit"
+              class="form__submit-button form__submit-button_inactive"
+              disabled
+            >
+              Save
+            </button>
+          </form>
+        </div>
         <div class="modal" id="edit-profile-modal">
           <form class="modal__form form" id="form-edit-profile">
             <button
@@ -31,7 +61,6 @@
                   id="form__name"
                   name="name"
                   placeholder="Name"
-                  value="Jacques Cousteau"
                   required
                   minlength="2"
                   maxlength="40"
@@ -45,7 +74,6 @@
                   id="form__description"
                   name="description"
                   placeholder="Description"
-                  value="Explorer"
                   required
                   minlength="2"
                   maxlength="200"
@@ -99,20 +127,23 @@
           </form>
         </div>
         <section class="profile page__section">
-          <img
-            src="<%=require('./images/jacques-cousteau.jpg')%>"
-            class="profile__pic"
-            alt="Profile picture"
-          />
+          <div class="profile__image-container">
+            <img class="profile__pic" alt="Profile picture" />
+            <button
+              class="profile__pic-edit"
+              type="button"
+              aria-label="Edit profile picture"
+            ></button>
+          </div>
           <div class="profile__container">
-            <h1 class="profile__name">Jacques Cousteau</h1>
+            <h1 class="profile__name"></h1>
             <button
               class="profile__edit-button"
               id="profile__edit-button"
               type="button"
-              aria-label="edit"
+              aria-label="edit profile"
             ></button>
-            <p class="profile__subtitle">Explorer</p>
+            <p class="profile__subtitle"></p>
           </div>
           <button
             class="profile__add-button"
@@ -130,6 +161,17 @@
             <img class="location__image" alt="location" />
             <p class="location__title"></p>
           </div>
+        </div>
+        <div class="modal" id="delete-card-modal">
+          <form class="modal__form form" id="form-delete-card">
+            <button
+              class="form__close-button modal__close"
+              type="button"
+              aria-label="close"
+            ></button>
+            <h2 class="form__title form__title_bottom-margin">Are you sure?</h2>
+            <button type="submit" class="form__submit-button">Yes</button>
+          </form>
         </div>
         <section class="locations page__section">
           <template id="locations__card">

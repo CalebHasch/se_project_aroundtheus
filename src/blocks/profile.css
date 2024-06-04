@@ -7,9 +7,35 @@
   flex-wrap: wrap;
 }
 
+.profile__image-container {
+  position: relative;
+}
+
+.profile__image-container:hover > .profile__pic {
+  opacity: 50%;
+}
+
+.profile__image-container:hover > .profile__pic-edit {
+  display: block;
+}
+
 .profile__pic {
   border-radius: 50%;
   margin-right: 30px;
+  height: 120px;
+  width: 120px;
+}
+
+.profile__pic-edit {
+  position: absolute;
+  background-image: url("../images/edit-icon2.svg");
+  background-color: transparent;
+  height: 24px;
+  width: 24px;
+  top: 48px;
+  left: 48px;
+  border: none;
+  display: none;
 }
 
 .profile__container {
@@ -119,6 +145,10 @@
     justify-content: center;
     margin: 0 auto;
     min-width: 282px;
+  }
+
+  .profile__name {
+    text-align: center;
   }
 
   .profile__subtitle {
